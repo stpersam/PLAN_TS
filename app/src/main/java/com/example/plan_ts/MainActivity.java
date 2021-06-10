@@ -3,7 +3,9 @@ package com.example.plan_ts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -23,14 +25,19 @@ public class MainActivity extends AppCompatActivity {
         text = findViewById(R.id.textView);
         JSONObject jObjectData = new JSONObject();
 
-        try {
-            // Create Json Object using text
-            jObjectData.put("text",text.toString());
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    // Create Json Object using text
+                    jObjectData.put("text",text.toString());
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
 
-        CallAPI callAPI = new CallAPI(url,jObjectData);
-        callAPI.doInBackground();
+                CallAPI callAPI = new CallAPI(url,jObjectData);
+                callAPI.doInBackground();
+            }
+        });
     }
 }
