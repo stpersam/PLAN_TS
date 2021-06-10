@@ -2,6 +2,8 @@ package com.example.plan_ts;
 
 import android.os.AsyncTask;
 
+import org.json.JSONObject;
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.OutputStream;
@@ -11,9 +13,9 @@ import java.net.URL;
 
 public class CallAPI extends AsyncTask<String, String, String> {
     private String urlString;
-    private String data;
+    private JSONObject data;
 
-    public CallAPI(String url, String data){
+    public CallAPI(String url, JSONObject data){
         this.urlString = url;
         this.data = data;
     }
@@ -27,7 +29,7 @@ public class CallAPI extends AsyncTask<String, String, String> {
             out = new BufferedOutputStream(urlConnection.getOutputStream());
 
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
-            writer.write(data);
+            writer.write(data.toString());
             writer.flush();
             writer.close();
             out.close();
