@@ -47,6 +47,13 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(i);
                 }else{
                     error.setText("Username or Password are incorrect");
+                    error.setVisibility(View.VISIBLE);
+                    error.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            error.setVisibility(View.GONE);
+                        }
+                    }, 5 * 1000);
                 }
             }
         });
