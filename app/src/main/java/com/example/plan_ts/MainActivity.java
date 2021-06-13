@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if(result != "0"){
                     Intent i  = new Intent(MainActivity.this,HomeScreen.class);
-                    i.putExtra(HomeScreen.HomeKey,result);
+                    i.putExtra(HomeScreen.HOME_KEY,result);
                     startActivity(i);
                 }
             }

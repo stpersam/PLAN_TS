@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.Window;
 
 public class HomeScreen extends AppCompatActivity {
-    public static final String HomeKey = "home";
+    public static final String HOME_KEY = "home";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
