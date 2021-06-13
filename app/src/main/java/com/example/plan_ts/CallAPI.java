@@ -13,9 +13,9 @@ import java.net.URL;
 
 public class CallAPI extends AsyncTask<String, String, String> {
     private String urlString;
-    private JSONObject data;
+    private String data;
 
-    public CallAPI(String url, JSONObject data){
+    public CallAPI(String url, String data){
         this.urlString = url;
         this.data = data;
     }
@@ -29,11 +29,10 @@ public class CallAPI extends AsyncTask<String, String, String> {
             out = new BufferedOutputStream(urlConnection.getOutputStream());
 
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
-            writer.write(data.toString());
+            writer.write(data);
             writer.flush();
             writer.close();
             out.close();
-
             urlConnection.connect();
         } catch (Exception e) {
             System.out.println(e.getMessage());

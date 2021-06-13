@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">PLAN_TS</string>
+    <string name="plan_ts">Plan-ts</string>
+    <string name="login">Login</string>
+    <string name="los_gehts">Los Gehts!</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
 </resources>
