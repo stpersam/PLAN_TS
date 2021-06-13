@@ -2,8 +2,10 @@ package com.example.plan_ts;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
@@ -21,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
+        getSupportActionBar().hide(); //hide the title bar
         setContentView(R.layout.activity_main);
 
         button = findViewById(R.id.login_button);
@@ -37,8 +41,10 @@ public class MainActivity extends AppCompatActivity {
                 result = callAPI.doInBackground();
                 username.setText(result);
 
-                if(result.contains("0")){
-                    //go to home page
+                if(result != "0"){
+                    Intent i  = new Intent(MainActivity.this,HomeScreen.class);
+                    i.putExtra(HomeScreen.HomeKey,result);
+                    startActivity(i);
                 }
             }
         });
