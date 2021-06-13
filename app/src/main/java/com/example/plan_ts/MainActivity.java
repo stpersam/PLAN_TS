@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private Button button;
     private TextView username;
     private TextView password;
-    private String url = "https://localhost:44312/api/Plan_ts";
+    private String url = "https://localhost:44312/api/Plan_ts/Login";
     private String content = "";
 
     @Override
@@ -31,9 +31,15 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String result = "test_noUser";
                 content = username.getText().toString() + password.getText().toString();
                 CallAPI callAPI = new CallAPI(url,content);
-                callAPI.doInBackground();
+                result = callAPI.doInBackground();
+                username.setText(result);
+
+                if(result.contains("0")){
+                    //go to home page
+                }
             }
         });
     }
