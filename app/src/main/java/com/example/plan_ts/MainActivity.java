@@ -16,6 +16,7 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
     private Button button;
     private TextView username;
+    private TextView error;
     private TextView password;
     private String url = "https://localhost:44312/api/Plan_ts/Login";
     private String content = "";
@@ -30,21 +31,22 @@ public class MainActivity extends AppCompatActivity {
         button = findViewById(R.id.login_button);
         username = findViewById(R.id.l_username);
         password = findViewById(R.id.l_password);
+        error = findViewById(R.id.login_error);
         JSONObject jObjectData = new JSONObject();
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String result = "test_noUser";
                 content = username.getText().toString() + password.getText().toString();
                 CallAPI callAPI = new CallAPI(url,content);
-                result = callAPI.doInBackground();
-                username.setText(result);
+                String result = callAPI.doInBackground();
 
-                if(result != "0"){
+                if(result != "0" && result != null){
                     Intent i  = new Intent(MainActivity.this,HomeScreen.class);
                     i.putExtra(HomeScreen.HOME_KEY,result);
                     startActivity(i);
+                }else{
+                    error.setText("Username or Password are incorrect");
                 }
             }
         });
