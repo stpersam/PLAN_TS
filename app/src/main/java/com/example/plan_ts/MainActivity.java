@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView username;
     private TextView error;
     private TextView password;
-    private String url = "https://localhost:44312/api/Plan_ts/Login";
+    private String url = "https://localhost:44343/api/Plan_ts/Login";
     private String content = "";
 
     @Override
@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 content = username.getText().toString() + password.getText().toString();
-                CallAPI callAPI = new CallAPI(url,content);
-                String result = callAPI.doInBackground();
+                CallAPI callAPI = new CallAPI();
+                String result = callAPI.doInBackground(url,content);
 
                 if(result != "0" && result != null){
                     Intent i  = new Intent(MainActivity.this,HomeScreen.class);
