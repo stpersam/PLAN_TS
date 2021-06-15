@@ -10,4 +10,6 @@
     <color name="blue">#2699FB</color>
     <color name="lightblue">#BCE0FD</color>
     <color name="red">#FF0000</color>
+    <color name="lightbluehome">#F1F9FF</color>
+    <color name="lightbluenav">#77B3E1</color>
 </resources>
