@@ -13,13 +13,16 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class MainActivity extends AppCompatActivity {
     private Button button;
     private TextView username;
     private TextView error;
     private TextView password;
-    private String url = "https://localhost:44343/api/Plan_ts/Login";
-    private String content = "";
+    ExecutorService executorService = Executors.newFixedThreadPool(4);
+    private final LoginRepository loginRepository = new LoginRepository(executorService);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,20 +35,25 @@ public class MainActivity extends AppCompatActivity {
         username = findViewById(R.id.l_username);
         password = findViewById(R.id.l_password);
         error = findViewById(R.id.login_error);
-        JSONObject jObjectData = new JSONObject();
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                content = username.getText().toString() + password.getText().toString();
-                CallAPI callAPI = new CallAPI();
-                String result = callAPI.doInBackground(url,content);
+                makeLoginRequest(username.getText().toString(),password.getText().toString());
+            }
+        });
+    }
 
-                if(result != "0" && result != null){
+    public void makeLoginRequest(String username, String password) {
+        String jsonBody = "{ user: \"" + username + "\", password: \"" + password + "\" }";
+        loginRepository.makeLoginRequest(jsonBody, new RepositoryCallback<String>() {
+            @Override
+            public void onComplete(Result<String> result) {
+                if (result instanceof Result.Success) {
                     Intent i  = new Intent(MainActivity.this,HomeScreen.class);
-                    i.putExtra(HomeScreen.HOME_KEY,result);
+                    i.putExtra(HomeScreen.HOME_KEY,((Result.Success<String>) result).data);
                     startActivity(i);
-                }else{
+                } else {
                     error.setText("Username or Password are incorrect");
                     error.setVisibility(View.VISIBLE);
                     error.postDelayed(new Runnable() {
