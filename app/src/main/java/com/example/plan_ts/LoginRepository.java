@@ -38,8 +38,8 @@ public class LoginRepository {
             URL url = new URL(loginUrl);
             HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
             httpConnection.setRequestMethod("POST");
-            httpConnection.setRequestProperty("Content-Type", "application/string; charset=utf-8");
-            httpConnection.setRequestProperty("Accept", "application/string");
+            httpConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+            httpConnection.setRequestProperty("Accept", "application/json");
             httpConnection.setDoOutput(true);
             httpConnection.getOutputStream().write(jsonBody.getBytes("utf-8"));
 
@@ -49,5 +49,4 @@ public class LoginRepository {
             return new Result.Error<String>(e);
         }
     }
-
 }

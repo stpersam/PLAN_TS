@@ -45,11 +45,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void makeLoginRequest(String username, String password) {
-        String jsonBody = "{ user: \"" + username + "\", password: \"" + password + "\" }";
+        String jsonBody = "{\"user\":\"" + username + "\",\"password\":\"" + password + "\"}";
+        //String jsonBody = username + "," + password;
         loginRepository.makeLoginRequest(jsonBody, new RepositoryCallback<String>() {
             @Override
             public void onComplete(Result<String> result) {
-                if (result instanceof Result.Success) {
+                if (result instanceof Result.Success && result != null) {
                     Intent i  = new Intent(MainActivity.this,HomeScreen.class);
                     i.putExtra(HomeScreen.HOME_KEY,((Result.Success<String>) result).data);
                     startActivity(i);
