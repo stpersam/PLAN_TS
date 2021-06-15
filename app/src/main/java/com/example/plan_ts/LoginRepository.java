@@ -10,7 +10,7 @@ interface RepositoryCallback<T> {
     void onComplete(Result<T> result);
 }
 public class LoginRepository {
-    private final String loginUrl = "https://127.0.0.1:44343/api/Plan_ts/Login";
+    private final String loginUrl = "https://google.com";
     private final Executor executor;
 
     public LoginRepository( Executor executor) {

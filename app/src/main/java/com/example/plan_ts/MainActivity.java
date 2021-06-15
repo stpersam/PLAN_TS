@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     ExecutorService executorService = Executors.newFixedThreadPool(4);
     private final LoginRepository loginRepository = new LoginRepository(executorService);
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,14 +40,27 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                makeLoginRequest(username.getText().toString(),password.getText().toString());
+                //makeLoginRequest(username.getText().toString(),password.getText().toString());
+                if(username.getText().toString().equals("User0") && password.getText().toString().equals("password0")) {
+                    Intent i = new Intent(MainActivity.this, HomeScreen.class);
+                    i.putExtra(HomeScreen.HOME_KEY,("User0"));
+                    startActivity(i);
+                }else{
+                    error.setText("Username or Password are incorrect");
+                    error.setVisibility(View.VISIBLE);
+                    error.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            error.setVisibility(View.GONE);
+                        }
+                    }, 5 * 1000);
+                }
             }
         });
     }
 
     public void makeLoginRequest(String username, String password) {
         String jsonBody = "{\"user\":\"" + username + "\",\"password\":\"" + password + "\"}";
-        //String jsonBody = username + "," + password;
         loginRepository.makeLoginRequest(jsonBody, new RepositoryCallback<Double>() {
             @Override
             public void onComplete(Result<Double> result) {
