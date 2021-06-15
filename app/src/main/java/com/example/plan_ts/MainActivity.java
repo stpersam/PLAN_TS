@@ -47,12 +47,13 @@ public class MainActivity extends AppCompatActivity {
     public void makeLoginRequest(String username, String password) {
         String jsonBody = "{\"user\":\"" + username + "\",\"password\":\"" + password + "\"}";
         //String jsonBody = username + "," + password;
-        loginRepository.makeLoginRequest(jsonBody, new RepositoryCallback<String>() {
+        loginRepository.makeLoginRequest(jsonBody, new RepositoryCallback<Double>() {
             @Override
-            public void onComplete(Result<String> result) {
+            public void onComplete(Result<Double> result) {
+                System.out.println(result);
                 if (result instanceof Result.Success && result != null) {
                     Intent i  = new Intent(MainActivity.this,HomeScreen.class);
-                    i.putExtra(HomeScreen.HOME_KEY,((Result.Success<String>) result).data);
+                    i.putExtra(HomeScreen.HOME_KEY,((Result.Success<Double>) result).data);
                     startActivity(i);
                 } else {
                     error.setText("Username or Password are incorrect");

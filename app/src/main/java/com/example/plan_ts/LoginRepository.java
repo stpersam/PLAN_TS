@@ -4,11 +4,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.Executor;
 
+import javax.net.ssl.HttpsURLConnection;
+
 interface RepositoryCallback<T> {
     void onComplete(Result<T> result);
 }
 public class LoginRepository {
-    private final String loginUrl = "https://localhost:44343/api/Plan_ts/";
+    private final String loginUrl = "https://127.0.0.1:44343/api/Plan_ts/Login";
     private final Executor executor;
 
     public LoginRepository( Executor executor) {
@@ -17,36 +19,36 @@ public class LoginRepository {
 
     public void makeLoginRequest(
             final String jsonBody,
-            final RepositoryCallback<String> callback
+            final RepositoryCallback<Double> callback
     ) {
         executor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Result<String> result = makeSynchronousLoginRequest(jsonBody);
+                    Result<Double> result = makeSynchronousLoginRequest(jsonBody);
                     callback.onComplete(result);
                 } catch (Exception e) {
-                    Result<String> errorResult = new Result.Error<>(e);
+                    Result<Double> errorResult = new Result.Error<>(e);
                     callback.onComplete(errorResult);
                 }
             }
         });
     }
 
-    public Result<String> makeSynchronousLoginRequest(String jsonBody) {
+    public Result<Double> makeSynchronousLoginRequest(String jsonBody) {
         try {
             URL url = new URL(loginUrl);
             HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
             httpConnection.setRequestMethod("POST");
             httpConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-            httpConnection.setRequestProperty("Accept", "application/json");
+            httpConnection.setRequestProperty("Accept", "text/plain");
             httpConnection.setDoOutput(true);
             httpConnection.getOutputStream().write(jsonBody.getBytes("utf-8"));
 
-            String loginResponse = httpConnection.getInputStream().toString();
-            return new Result.Success<String>(loginResponse);
+            Double loginResponse = Double.parseDouble(httpConnection.getInputStream().toString());
+            return new Result.Success<Double>(loginResponse);
         } catch (Exception e) {
-            return new Result.Error<String>(e);
+            return new Result.Error<Double>(e);
         }
     }
 }
