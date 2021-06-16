@@ -11,9 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PLAN_TS">
-        <activity android:name=".PlantDetail"></activity>
-        <activity android:name=".NewPlant" />
-        <activity android:name=".HomeScreen" />
+        <activity android:name=".PflanzeDetailView"></activity>
+        <activity android:name=".NewPflanzeView" />
+        <activity android:name=".HomeScreenView" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
-public class NewPlant extends AppCompatActivity {
+public class NewPflanzeView extends AppCompatActivity {
     private Button newPlant_back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +21,7 @@ public class NewPlant extends AppCompatActivity {
         newPlant_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                finish();
             }
         });
 

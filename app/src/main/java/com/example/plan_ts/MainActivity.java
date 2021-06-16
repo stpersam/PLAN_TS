@@ -7,11 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.TextView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -42,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //makeLoginRequest(username.getText().toString(),password.getText().toString());
                 if(username.getText().toString().equals("User0") && password.getText().toString().equals("password0")) {
-                    Intent i = new Intent(MainActivity.this, HomeScreen.class);
-                    i.putExtra(HomeScreen.HOME_KEY,("User0"));
+                    Intent i = new Intent(MainActivity.this, HomeScreenView.class);
+                    i.putExtra(HomeScreenView.HOME_KEY,("User0"));
                     startActivity(i);
                 }else{
                     error.setText("Username or Password are incorrect");
@@ -66,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(Result<Double> result) {
                 System.out.println(result);
                 if (result instanceof Result.Success && result != null) {
-                    Intent i  = new Intent(MainActivity.this,HomeScreen.class);
-                    i.putExtra(HomeScreen.HOME_KEY,((Result.Success<Double>) result).data);
+                    Intent i  = new Intent(MainActivity.this, HomeScreenView.class);
+                    i.putExtra(HomeScreenView.HOME_KEY,((Result.Success<Double>) result).data);
                     startActivity(i);
                 } else {
                     error.setText("Username or Password are incorrect");

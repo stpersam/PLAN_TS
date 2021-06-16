@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
-public class HomeScreen extends AppCompatActivity {
+public class HomeScreenView extends AppCompatActivity {
     public static final String HOME_KEY = "home";
     private Button plantadd;
     private Button plant1;
@@ -27,15 +27,15 @@ public class HomeScreen extends AppCompatActivity {
         plant1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(HomeScreen.this, PlantDetail.class);
-                i.putExtra(PlantDetail.PLANT_KEY,("Plant1"));
+                Intent i = new Intent(HomeScreenView.this, PflanzeDetailView.class);
+                i.putExtra(PflanzeDetailView.PLANT_KEY,("Plant1"));
                 startActivity(i);
             }
         });
         plantadd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(HomeScreen.this, NewPlant.class);
+                Intent i = new Intent(HomeScreenView.this, NewPflanzeView.class);
                 startActivity(i);
             }
         });
