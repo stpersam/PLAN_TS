@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -36,8 +38,10 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //makeLoginRequest(username.getText().toString(),password.getText().toString());
-                if(username.getText().toString().equals("User0") && password.getText().toString().equals("password0")) {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+                makeLoginRequest(username.getText().toString(),password.getText().toString());
+                /*if(username.getText().toString().equals("User0") && password.getText().toString().equals("password0")) {
                     Intent i = new Intent(MainActivity.this, HomeScreenView.class);
                     i.putExtra(HomeScreenView.HOME_KEY,("User0"));
                     startActivity(i);
@@ -50,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                             error.setVisibility(View.GONE);
                         }
                     }, 5 * 1000);
-                }
+                }*/
             }
         });
     }
@@ -60,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
         loginRepository.makeLoginRequest(jsonBody, new RepositoryCallback<Double>() {
             @Override
             public void onComplete(Result<Double> result) {
-                System.out.println(result);
+                System.out.println(result.toString());
+                Log.d("TESTPOST",result.toString());
                 if (result instanceof Result.Success && result != null) {
                     Intent i  = new Intent(MainActivity.this, HomeScreenView.class);
                     i.putExtra(HomeScreenView.HOME_KEY,((Result.Success<Double>) result).data);
