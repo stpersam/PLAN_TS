@@ -41,20 +41,6 @@ public class MainActivity extends AppCompatActivity {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
                 makeLoginRequest(username.getText().toString(),password.getText().toString());
-                /*if(username.getText().toString().equals("User0") && password.getText().toString().equals("password0")) {
-                    Intent i = new Intent(MainActivity.this, HomeScreenView.class);
-                    i.putExtra(HomeScreenView.HOME_KEY,("User0"));
-                    startActivity(i);
-                }else{
-                    error.setText("Username or Password are incorrect");
-                    error.setVisibility(View.VISIBLE);
-                    error.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            error.setVisibility(View.GONE);
-                        }
-                    }, 5 * 1000);
-                }*/
             }
         });
     }
