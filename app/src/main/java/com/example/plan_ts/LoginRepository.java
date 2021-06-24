@@ -1,5 +1,8 @@
 package com.example.plan_ts;
 
+import android.os.StrictMode;
+import android.util.Log;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.Executor;
@@ -10,7 +13,7 @@ interface RepositoryCallback<T> {
     void onComplete(Result<T> result);
 }
 public class LoginRepository {
-    private final String loginUrl = "https://localhost:5001/api/Plan_ts/";
+    private final String loginUrl = "https://10.0.2.2:5001/api/Plan_ts/";
     private final Executor executor;
 
     public LoginRepository( Executor executor) {
@@ -21,6 +24,9 @@ public class LoginRepository {
             final String jsonBody,
             final RepositoryCallback<Double> callback
     ) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         executor.execute(new Runnable() {
             @Override
             public void run() {
@@ -38,7 +44,8 @@ public class LoginRepository {
     public Result<Double> makeSynchronousLoginRequest(String jsonBody) {
         try {
             URL url = new URL(loginUrl + "Login");
-            HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+            Log.d("connect",url.toString());
+            HttpsURLConnection httpConnection = (HttpsURLConnection) url.openConnection();
             httpConnection.setRequestMethod("POST");
             httpConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
             httpConnection.setRequestProperty("Accept", "text/plain");
@@ -46,9 +53,10 @@ public class LoginRepository {
             httpConnection.getOutputStream().write(jsonBody.getBytes("utf-8"));
 
             Double loginResponse = Double.parseDouble(httpConnection.getInputStream().toString());
-
+            Log.d("connectendet",loginResponse.toString());
             return new Result.Success<Double>(loginResponse);
         } catch (Exception e) {
+            //Log.d("connect",);
             return new Result.Error<Double>(e);
         }
     }

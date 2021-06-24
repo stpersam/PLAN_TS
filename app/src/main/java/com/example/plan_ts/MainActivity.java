@@ -38,15 +38,13 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                StrictMode.setThreadPolicy(policy);
                 makeLoginRequest(username.getText().toString(),password.getText().toString());
             }
         });
     }
-
     public void makeLoginRequest(String username, String password) {
         String jsonBody = "{\"user\":\"" + username + "\",\"password\":\"" + password + "\"}";
+        Log.d("start",jsonBody);
         loginRepository.makeLoginRequest(jsonBody, new RepositoryCallback<Double>() {
             @Override
             public void onComplete(Result<Double> result) {
