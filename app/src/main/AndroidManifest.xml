@@ -10,8 +10,10 @@
         android:label=""
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PLAN_TS">
-        <activity android:name=".PflanzeDetailView"></activity>
+        android:theme="@style/Theme.PLAN_TS"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".testget"></activity>
+        <activity android:name=".PflanzeDetailView" />
         <activity android:name=".NewPflanzeView" />
         <activity android:name=".HomeScreenView" />
         <activity android:name=".MainActivity">

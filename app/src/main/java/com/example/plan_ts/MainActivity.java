@@ -38,7 +38,9 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                makeLoginRequest(username.getText().toString(),password.getText().toString());
+                Intent i  = new Intent(MainActivity.this, testget.class);
+                startActivity(i);
+                //makeLoginRequest(username.getText().toString(),password.getText().toString());
             }
         });
     }
