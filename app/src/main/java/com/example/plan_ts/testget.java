@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -71,7 +72,7 @@ public class testget extends AppCompatActivity {
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
         } catch (Exception e) {}
 
-        WebRunnable webRunnable = new WebRunnable("http://10.0.2.2:5000/api/Plan_ts/GetTestPflanzen");
+        WebRunnable webRunnable = new WebRunnable("https://10.0.2.2:5001/api/Plan_ts/GetTestPflanzen");
         new Thread(webRunnable).start();
     }
 
@@ -91,11 +92,16 @@ public class testget extends AppCompatActivity {
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 InputStream in = urlConnection.getInputStream();
+                Log.d("asdf",in.toString());
                 Scanner scanner = new Scanner(in);
+                Log.d("asdf",scanner.toString());
                 scanner.useDelimiter("\\A");
                 Handler mainHandler = new Handler(Looper.getMainLooper());
+
                 if(scanner.hasNext()){
+
                     out = scanner.next();
+                    Log.d("asdf",out);
                 }
 
                 mainHandler.post(new Runnable() {
