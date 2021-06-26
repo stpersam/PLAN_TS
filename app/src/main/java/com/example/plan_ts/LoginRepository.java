@@ -93,7 +93,6 @@ public class LoginRepository {
             httpConnection.setRequestProperty("Accept", "text/plain");
             httpConnection.setDoOutput(true);
             httpConnection.setDoInput(true);
-            Log.d("connectvorsenden",url.toString());
 
             OutputStream os = httpConnection.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
@@ -109,7 +108,6 @@ public class LoginRepository {
 
             if(scanner.hasNext()){
                 out = scanner.next();
-                Log.d("asdf",out);
             }
 
             return new Result.Success<Integer>(Integer.parseInt(out));

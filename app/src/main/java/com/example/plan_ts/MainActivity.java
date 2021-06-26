@@ -38,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent i  = new Intent(MainActivity.this, testget.class);
-                startActivity(i);*/
                 makeLoginRequest(username.getText().toString(),password.getText().toString());
             }
         });
@@ -51,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(Result<Integer> result) {
                 System.out.println(result.toString());
-                Log.d("TESTPOST",result.toString());
                 if (result instanceof Result.Success && result != null && ((Result.Success<Integer>) result).data != 0) {
                     Intent i  = new Intent(MainActivity.this, HomeScreenView.class);
                     i.putExtra(HomeScreenView.HOME_KEY,((Result.Success<Integer>) result).data);
