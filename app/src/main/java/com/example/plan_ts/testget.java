@@ -92,16 +92,12 @@ public class testget extends AppCompatActivity {
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 InputStream in = urlConnection.getInputStream();
-                Log.d("asdf",in.toString());
                 Scanner scanner = new Scanner(in);
-                Log.d("asdf",scanner.toString());
                 scanner.useDelimiter("\\A");
                 Handler mainHandler = new Handler(Looper.getMainLooper());
 
                 if(scanner.hasNext()){
-
                     out = scanner.next();
-                    Log.d("asdf",out);
                 }
 
                 mainHandler.post(new Runnable() {

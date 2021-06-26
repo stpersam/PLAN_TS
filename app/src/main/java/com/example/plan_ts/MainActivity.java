@@ -44,14 +44,13 @@ public class MainActivity extends AppCompatActivity {
     }
     public void makeLoginRequest(String username, String password) {
         String jsonBody = "{\"user\":\"" + username + "\",\"password\":\"" + password + "\"}";
-        Log.d("start",jsonBody);
         loginRepository.makeLoginRequest(jsonBody, new RepositoryCallback<Integer>() {
             @Override
             public void onComplete(Result<Integer> result) {
-                System.out.println(result.toString());
                 if (result instanceof Result.Success && result != null && ((Result.Success<Integer>) result).data != 0) {
                     Intent i  = new Intent(MainActivity.this, HomeScreenView.class);
-                    i.putExtra(HomeScreenView.HOME_KEY,((Result.Success<Integer>) result).data);
+                    i.putExtra(HomeScreenView.SESSIONID,((Result.Success<Integer>) result).data.toString());
+                    i.putExtra(HomeScreenView.USERNAME,username);
                     startActivity(i);
                 } else {
                     error.setText("Username or Password are incorrect");

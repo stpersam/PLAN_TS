@@ -9,6 +9,8 @@ import android.widget.Button;
 
 public class PflanzeDetailView extends AppCompatActivity {
     public static final String PLANT_KEY = "Plant1";
+    public static final String SESSIONID = "home";
+    public static final String USERNAME = "home";
     private Button Plant_back;
 
     @Override
