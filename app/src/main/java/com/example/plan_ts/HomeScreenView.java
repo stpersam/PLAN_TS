@@ -23,6 +23,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -39,6 +40,10 @@ public class HomeScreenView extends AppCompatActivity {
     private Button plant1;
     private Button gruppenbtn;
     String out;
+
+    private List<Gruppe> gruppen;
+    private List<Pflanzenart> pflanzenarten;
+    private List<Pflanze> userPflanzen;
 
 
     @Override
@@ -116,7 +121,24 @@ public class HomeScreenView extends AppCompatActivity {
             thread.start();
             thread.join();
             out = apiget.getResult();
-            System.out.println("main" + out);
-        }catch (Exception e){}
+
+            System.out.println(out);
+            String[] tmp = out.split("\\|");
+            for (String a: tmp) {
+                String[] tmp2 = a.split("\\}");
+                for (String x: tmp2) {
+                    x = x.replace("{","");
+                    String[] tmp3 = x.split(",");
+                    System.out.println("----------------------------------------------------------------------------");
+                    for (String c: tmp3) {
+                        System.out.println(c);
+                    }
+                }
+
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
