@@ -38,23 +38,23 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i  = new Intent(MainActivity.this, testget.class);
-                startActivity(i);
-                //makeLoginRequest(username.getText().toString(),password.getText().toString());
+                /*Intent i  = new Intent(MainActivity.this, testget.class);
+                startActivity(i);*/
+                makeLoginRequest(username.getText().toString(),password.getText().toString());
             }
         });
     }
     public void makeLoginRequest(String username, String password) {
         String jsonBody = "{\"user\":\"" + username + "\",\"password\":\"" + password + "\"}";
         Log.d("start",jsonBody);
-        loginRepository.makeLoginRequest(jsonBody, new RepositoryCallback<Double>() {
+        loginRepository.makeLoginRequest(jsonBody, new RepositoryCallback<Integer>() {
             @Override
-            public void onComplete(Result<Double> result) {
+            public void onComplete(Result<Integer> result) {
                 System.out.println(result.toString());
                 Log.d("TESTPOST",result.toString());
-                if (result instanceof Result.Success && result != null) {
+                if (result instanceof Result.Success && result != null && ((Result.Success<Integer>) result).data != 0) {
                     Intent i  = new Intent(MainActivity.this, HomeScreenView.class);
-                    i.putExtra(HomeScreenView.HOME_KEY,((Result.Success<Double>) result).data);
+                    i.putExtra(HomeScreenView.HOME_KEY,((Result.Success<Integer>) result).data);
                     startActivity(i);
                 } else {
                     error.setText("Username or Password are incorrect");

@@ -34,6 +34,7 @@ import javax.net.ssl.X509TrustManager;
 interface RepositoryCallback<T> {
     void onComplete(Result<T> result);
 }
+
 public class LoginRepository {
     private final Executor executor;
 
@@ -43,7 +44,7 @@ public class LoginRepository {
 
     public void makeLoginRequest(
             final String jsonBody,
-            final RepositoryCallback<Double> callback
+            final RepositoryCallback<Integer> callback
     ) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -52,17 +53,17 @@ public class LoginRepository {
             @Override
             public void run() {
                 try {
-                    Result<Double> result = makeSynchronousLoginRequest(jsonBody);
+                    Result<Integer> result = makeSynchronousLoginRequest(jsonBody);
                     callback.onComplete(result);
                 } catch (Exception e) {
-                    Result<Double> errorResult = new Result.Error<>(e);
+                    Result<Integer> errorResult = new Result.Error<>(e);
                     callback.onComplete(errorResult);
                 }
             }
         });
     }
 
-    public Result<Double> makeSynchronousLoginRequest(String jsonBody) {
+    public Result<Integer> makeSynchronousLoginRequest(String jsonBody) {
         // Create a trust manager that does not validate certificate chains
         TrustManager[] trustAllCerts = new TrustManager[]{
                 new X509TrustManager() {
@@ -85,7 +86,7 @@ public class LoginRepository {
         } catch (Exception e) {}
 
         try {
-            URL url = new URL("https://10.0.2.2:5001/api/Plan_ts/Login");
+            URL url = new URL("https://10.0.0.152:45455/api/Plan_ts/Login");
             HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
             httpConnection.setRequestMethod("POST");
             httpConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
@@ -106,19 +107,15 @@ public class LoginRepository {
             scanner.useDelimiter("\\A");
             String out = "";
 
-            if (scanner.hasNext()) {
-                JSONObject root = new JSONObject(scanner.next());
-                JSONArray results = root.getJSONArray("result");
-                for(int i = 0; i < results.length(); i++){
-                    JSONObject result = results.getJSONObject(i);
-                    out += result;
-                }
+            if(scanner.hasNext()){
+                out = scanner.next();
+                Log.d("asdf",out);
             }
 
-            return new Result.Success<Double>(Double.parseDouble(out));
+            return new Result.Success<Integer>(Integer.parseInt(out));
         } catch (Exception e) {
             System.out.println(e);
-            return new Result.Error<Double>(e);
+            return new Result.Error<Integer>(e);
         }
     }
 }

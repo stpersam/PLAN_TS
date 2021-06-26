@@ -72,7 +72,7 @@ public class testget extends AppCompatActivity {
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
         } catch (Exception e) {}
 
-        WebRunnable webRunnable = new WebRunnable("https://10.0.2.2:5001/api/Plan_ts/GetTestPflanzen");
+        WebRunnable webRunnable = new WebRunnable("https://10.0.0.152:45455/api/Plan_ts/GetTestPflanzen");
         new Thread(webRunnable).start();
     }
 
