@@ -7,10 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="blue">#2699FB</color>
-    <color name="lightblue">#BCE0FD</color>
+    <color name="blue">#51975B</color>
+    <color name="lightblue">#4B945D</color>
     <color name="red">#FF0000</color>
-    <color name="lightbluehome">#F1F9FF</color>
-    <color name="lightbluenav">#77B3E1</color>
+    <color name="lightbluehome">#AFCB54</color>
+    <color name="lightbluenav">#2D7E5E</color>
     <color name="grey">#808080</color>
 </resources>

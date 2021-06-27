@@ -47,11 +47,13 @@
 
         <TextView
             android:layout_marginTop="150dp"
-            android:layout_marginLeft="90dp"
+            android:layout_marginLeft="70dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/blue"
-            android:text="30% deiner Pflanzen sind bewässert"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:text="30% Pflanzen sind bewässert"
             ></TextView>
     </RelativeLayout>
 
@@ -96,7 +98,7 @@
             android:backgroundTint="@color/lightbluehome"
             android:text="Plant1"
             android:textAllCaps="false"
-            android:textColor="@color/blue">
+            android:textColor="@color/white">
         </Button>
         <Button
             android:id="@+id/home_plant2"
@@ -107,7 +109,7 @@
             android:backgroundTint="@color/lightbluehome"
             android:textAllCaps="false"
             android:text="Plant2"
-            android:textColor="@color/blue">
+            android:textColor="@color/white">
         </Button>
         <Button
             android:id="@+id/home_plant3"
@@ -118,7 +120,7 @@
             android:backgroundTint="@color/lightbluehome"
             android:textAllCaps="false"
             android:text="Plant2"
-            android:textColor="@color/blue"
+            android:textColor="@color/white"
             >
         </Button>
 
