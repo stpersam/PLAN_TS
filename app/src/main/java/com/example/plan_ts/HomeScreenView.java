@@ -1,11 +1,8 @@
 package com.example.plan_ts;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,22 +11,9 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import com.google.gson.Gson;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 public class HomeScreenView extends AppCompatActivity {
     public static final String SESSIONID = "H_session";
@@ -41,10 +25,9 @@ public class HomeScreenView extends AppCompatActivity {
     private Button gruppenbtn;
     String out;
 
-    private List<Gruppe> gruppen;
-    private List<Pflanzenart> pflanzenarten;
-    private List<Pflanze> userPflanzen;
-
+    private List<Gruppe> gruppen = new ArrayList<>();
+    private List<Pflanzenart> pflanzenarten = new ArrayList<>();
+    private List<Pflanze> userPflanzen = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +43,7 @@ public class HomeScreenView extends AppCompatActivity {
         gruppenbtn = findViewById(R.id.gruppen_btn);
 
         //Initialize Data for HomeScreen of User
-        loadWebResult();
+        Initialize();
 
         gruppenbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +97,7 @@ public class HomeScreenView extends AppCompatActivity {
         });
     }
 
-    private void loadWebResult() {
+    private void Initialize() {
         try {
             APIGET apiget = new APIGET(name, session, "Initialize");
             Thread thread = new Thread(apiget);
@@ -122,19 +105,32 @@ public class HomeScreenView extends AppCompatActivity {
             thread.join();
             out = apiget.getResult();
 
-            System.out.println(out);
             String[] tmp = out.split("\\|");
-            for (String a: tmp) {
-                String[] tmp2 = a.split("\\}");
-                for (String x: tmp2) {
-                    x = x.replace("{","");
-                    String[] tmp3 = x.split(",");
-                    System.out.println("----------------------------------------------------------------------------");
-                    for (String c: tmp3) {
-                        System.out.println(c);
-                    }
-                }
+            tmp[0] = tmp[0].replace("}{", "};{");
+            tmp[2] = tmp[2].replace("}{", "};{");
+            String[] pflanzenA = tmp[0].split(";");
+            String[] pfl = tmp[2].split(";");
 
+            try {
+                //Pflanzenarten
+                Gson gsonPA = new Gson();
+                for (String x : pflanzenA){
+                    System.out.println(x);
+                    Pflanzenart gsonObjPA = gsonPA.fromJson(x, Pflanzenart.class);
+                    pflanzenarten.add(gsonObjPA);
+                }
+                //Gruppen
+                Gson gsonG = new Gson();
+                Gruppe gsonObjG = gsonG.fromJson(tmp[1], Gruppe.class);
+                gruppen.add(gsonObjG);
+                //Pflanze
+                Gson gsonPF = new Gson();
+                for (String a : pfl){
+                    Pflanze gsonObjPF = gsonPF.fromJson(a, Pflanze.class);
+                    userPflanzen.add(gsonObjPF);
+                }
+            }catch(Exception e) {
+                e.printStackTrace();
             }
 
         }catch (Exception e){

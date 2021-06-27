@@ -3,63 +3,21 @@ package com.example.plan_ts;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
+public class Gruppe{
 
-public class Gruppe implements Parcelable {
-
+    @SerializedName("GruppenID")
     public Integer GruppenID;
-
+    @SerializedName("Gruppenname")
     public String Gruppenname;
+    @SerializedName("Beschreibung")
     public String Beschreibung;
-
-     public User User;
-
+    @SerializedName("Username")
     public String Username;
 
-
-    protected Gruppe(Parcel in) {
-        if (in.readByte() == 0) {
-            GruppenID = null;
-        } else {
-            GruppenID = in.readInt();
-        }
-        Gruppenname = in.readString();
-        Beschreibung = in.readString();
-        User = in.readParcelable(com.example.plan_ts.User.class.getClassLoader());
-        Username = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        if (GruppenID == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeInt(GruppenID);
-        }
-        dest.writeString(Gruppenname);
-        dest.writeString(Beschreibung);
-        dest.writeParcelable(User, flags);
-        dest.writeString(Username);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<Gruppe> CREATOR = new Creator<Gruppe>() {
-        @Override
-        public Gruppe createFromParcel(Parcel in) {
-            return new Gruppe(in);
-        }
-
-        @Override
-        public Gruppe[] newArray(int size) {
-            return new Gruppe[size];
-        }
-    };
 
     public Integer getGruppenID() {
         return GruppenID;
@@ -85,14 +43,6 @@ public class Gruppe implements Parcelable {
         Beschreibung = beschreibung;
     }
 
-    public com.example.plan_ts.User getUser() {
-        return User;
-    }
-
-    public void setUser(com.example.plan_ts.User user) {
-        User = user;
-    }
-
     public String getUsername() {
         return Username;
     }
@@ -101,7 +51,4 @@ public class Gruppe implements Parcelable {
         Username = username;
     }
 
-    public static Creator<Gruppe> getCREATOR() {
-        return CREATOR;
-    }
 }

@@ -3,80 +3,24 @@ package com.example.plan_ts;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
 
-public class Pflanzenart implements Parcelable {
 
+public class Pflanzenart{
+
+    @SerializedName("Bezeichnung")
     public String Bezeichnung;
-
+    @SerializedName("Lichtbeduerfnisse")
     public String Lichtbeduerfnisse;
-    public Double Topfgröße;
+    @SerializedName("Topfgroesse")
+    public Double Topfgroesse;
+    @SerializedName("Erde")
     public String Erde;
+    @SerializedName("Wasserzyklus")
     public Double Wasserzyklus;
+    @SerializedName("Luftfeuchtigkeit")
     public Integer Luftfeuchtigkeit;
 
-
-    protected Pflanzenart(Parcel in) {
-        Bezeichnung = in.readString();
-        Lichtbeduerfnisse = in.readString();
-        if (in.readByte() == 0) {
-            Topfgröße = null;
-        } else {
-            Topfgröße = in.readDouble();
-        }
-        Erde = in.readString();
-        if (in.readByte() == 0) {
-            Wasserzyklus = null;
-        } else {
-            Wasserzyklus = in.readDouble();
-        }
-        if (in.readByte() == 0) {
-            Luftfeuchtigkeit = null;
-        } else {
-            Luftfeuchtigkeit = in.readInt();
-        }
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(Bezeichnung);
-        dest.writeString(Lichtbeduerfnisse);
-        if (Topfgröße == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeDouble(Topfgröße);
-        }
-        dest.writeString(Erde);
-        if (Wasserzyklus == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeDouble(Wasserzyklus);
-        }
-        if (Luftfeuchtigkeit == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeInt(Luftfeuchtigkeit);
-        }
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<Pflanzenart> CREATOR = new Creator<Pflanzenart>() {
-        @Override
-        public Pflanzenart createFromParcel(Parcel in) {
-            return new Pflanzenart(in);
-        }
-
-        @Override
-        public Pflanzenart[] newArray(int size) {
-            return new Pflanzenart[size];
-        }
-    };
 
     public String getBezeichnung() {
         return Bezeichnung;
@@ -94,12 +38,12 @@ public class Pflanzenart implements Parcelable {
         Lichtbeduerfnisse = lichtbeduerfnisse;
     }
 
-    public Double getTopfgröße() {
-        return Topfgröße;
+    public Double getTopfgroesse() {
+        return Topfgroesse;
     }
 
-    public void setTopfgröße(Double topfgröße) {
-        Topfgröße = topfgröße;
+    public void setTopfgroesse(Double topfgroesse) {
+        Topfgroesse = topfgroesse;
     }
 
     public String getErde() {
@@ -124,9 +68,5 @@ public class Pflanzenart implements Parcelable {
 
     public void setLuftfeuchtigkeit(Integer luftfeuchtigkeit) {
         Luftfeuchtigkeit = luftfeuchtigkeit;
-    }
-
-    public static Creator<Pflanzenart> getCREATOR() {
-        return CREATOR;
     }
 }
