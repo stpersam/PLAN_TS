@@ -13,8 +13,11 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.Toast;
 
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,33 +92,35 @@ public class HomeScreenView extends AppCompatActivity {
         boolean focusable = true; // lets taps outside the popup also dismiss it
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
-        //generate buttons
-        for (int i = 0; i < gruppen.size(); i++) {
-            Button myButton = new Button(this);
-            myButton.setText(gruppen.get(i).Gruppenname);
-            myButton.setBackgroundColor(Color.rgb(241, 249, 255));
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            );
+        TableLayout tab_lay = (TableLayout) popupView.findViewById(R.id.tab_lay);
+        for(int i = 0; i < gruppen.size(); ){
+            TableRow a = new TableRow(this);
+            TableRow.LayoutParams param = new TableRow.LayoutParams(
+                    TableRow.LayoutParams.WRAP_CONTENT,
+                    TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
+            param.setMargins(10, 10, 10, 10);
+            a.setLayoutParams(param);
+            a.setGravity(Gravity.CENTER_VERTICAL);
 
-            params.setMargins(10, 10, 10, 10);
-            myButton.setLayoutParams(params);
-            myButton.setId(gruppen.get(i).GruppenID);
-            final int id_ = myButton.getId();
-            LinearLayout layout = (LinearLayout) popupView.findViewById(R.id.ButtonLayout);
-            layout.addView(myButton);
-
-            myButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-                    if(myButton.isSelected()){
-                        myButton.setBackgroundColor(Color.rgb(241, 249, 255));
-                    }else{
-                        myButton.setBackgroundColor(Color.rgb(165,216,254));
-                    }
-                    selectedGoups.add(id_);
-                }
-            });
+            for(int y = 0; (y < 2) && (i < gruppen.size()); y++) {
+                Button x = new Button(this);
+                x.setText(gruppen.get(i).Gruppenname);
+                x.setGravity(Gravity.CENTER);
+                TableRow.LayoutParams par = new TableRow.LayoutParams(y);
+                x.setLayoutParams(par);
+                x.setPadding(40,40,40,40);
+                int ids = gruppen.get(i).GruppenID;
+                x.setId(ids);
+                x.setOnClickListener(new View.OnClickListener() {
+                     public void onClick(View view) {
+                         x.setBackgroundColor(Color.rgb(165,216,254));
+                         selectedGoups.add(ids);
+                     }
+                 });
+                a.addView(x);
+                i++;
+            }
+            tab_lay.addView(a);
         }
 
         // show the popup window
