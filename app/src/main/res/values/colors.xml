@@ -12,4 +12,5 @@
     <color name="red">#FF0000</color>
     <color name="lightbluehome">#F1F9FF</color>
     <color name="lightbluenav">#77B3E1</color>
+    <color name="grey">#808080</color>
 </resources>

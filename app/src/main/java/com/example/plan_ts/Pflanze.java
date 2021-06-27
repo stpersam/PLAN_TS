@@ -1,12 +1,6 @@
 package com.example.plan_ts;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.gson.annotations.SerializedName;
-
-import java.util.Date;
-
 
 public class Pflanze{
 
@@ -26,8 +20,6 @@ public class Pflanze{
     public String Gruppenname;
     @SerializedName("Pflanzeartname")
     public String Pflanzeartname;
-
-
 
 
     public Integer getPflanzenID() {

@@ -1,16 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#62def8">
+    android:background="@drawable/border"
+    android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_centerInParent="true"
-        android:layout_margin="30dp"
-        android:textSize="22sp"
-        android:text="This is a popup window."/>
+        android:layout_margin="10dp" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:textSize="22sp"
+            android:backgroundTint="@color/white"
+            android:text="Gruppen Auswahl"/>
+    </LinearLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/ButtonLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerInParent="true"
+        android:layout_margin="10dp" >
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/SelectBtn"
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:backgroundTint="@color/blue"
+        android:text="Auswählen"/>
+
+</LinearLayout>

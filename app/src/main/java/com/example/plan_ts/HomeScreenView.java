@@ -2,7 +2,9 @@ package com.example.plan_ts;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.DynamicLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -11,6 +13,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Toast;
+
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +29,7 @@ public class HomeScreenView extends AppCompatActivity {
     private Button gruppenbtn;
     String out;
 
+    private List<Integer> selectedGoups = new ArrayList<>();
     private List<Gruppe> gruppen = new ArrayList<>();
     private List<Pflanzenart> pflanzenarten = new ArrayList<>();
     private List<Pflanze> userPflanzen = new ArrayList<>();
@@ -76,6 +81,7 @@ public class HomeScreenView extends AppCompatActivity {
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.home_group_popup, null);
+        Button selectBtn = popupView.findViewById(R.id.SelectBtn);
 
         // create the popup window
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -83,16 +89,45 @@ public class HomeScreenView extends AppCompatActivity {
         boolean focusable = true; // lets taps outside the popup also dismiss it
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
+        //generate buttons
+        for (int i = 0; i < gruppen.size(); i++) {
+            Button myButton = new Button(this);
+            myButton.setText(gruppen.get(i).Gruppenname);
+            myButton.setBackgroundColor(Color.rgb(241, 249, 255));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+
+            params.setMargins(10, 10, 10, 10);
+            myButton.setLayoutParams(params);
+            myButton.setId(gruppen.get(i).GruppenID);
+            final int id_ = myButton.getId();
+            LinearLayout layout = (LinearLayout) popupView.findViewById(R.id.ButtonLayout);
+            layout.addView(myButton);
+
+            myButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    if(myButton.isSelected()){
+                        myButton.setBackgroundColor(Color.rgb(241, 249, 255));
+                    }else{
+                        myButton.setBackgroundColor(Color.rgb(165,216,254));
+                    }
+                    selectedGoups.add(id_);
+                }
+            });
+        }
+
         // show the popup window
         // which view you pass in doesn't matter, it is only used for the window tolken
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
         // dismiss the popup window when touched
-        popupView.setOnTouchListener(new View.OnTouchListener() {
+        selectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public void onClick(View v) {
                 popupWindow.dismiss();
-                return true;
+                return;
             }
         });
     }
@@ -107,9 +142,11 @@ public class HomeScreenView extends AppCompatActivity {
 
             String[] tmp = out.split("\\|");
             tmp[0] = tmp[0].replace("}{", "};{");
+            tmp[1] = tmp[1].replace("}{", "};{");
             tmp[2] = tmp[2].replace("}{", "};{");
             String[] pflanzenA = tmp[0].split(";");
             String[] pfl = tmp[2].split(";");
+            String[] grp = tmp[1].split(";");
 
             try {
                 //Pflanzenarten
@@ -120,9 +157,12 @@ public class HomeScreenView extends AppCompatActivity {
                     pflanzenarten.add(gsonObjPA);
                 }
                 //Gruppen
-                Gson gsonG = new Gson();
-                Gruppe gsonObjG = gsonG.fromJson(tmp[1], Gruppe.class);
-                gruppen.add(gsonObjG);
+                for (String g : grp) {
+                    Gson gsonG = new Gson();
+                    Gruppe gsonObjG = gsonG.fromJson(g, Gruppe.class);
+                    gruppen.add(gsonObjG);
+                    System.out.println(g);
+                }
                 //Pflanze
                 Gson gsonPF = new Gson();
                 for (String a : pfl){
