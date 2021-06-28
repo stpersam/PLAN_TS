@@ -68,7 +68,6 @@ public class PflanzeDetailView extends AppCompatActivity {
                 Pflanze gsonObjPF = gsonPF.fromJson(a, Pflanze.class);
                 userPflanzen.add(gsonObjPF);
             }
-
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -79,19 +78,14 @@ public class PflanzeDetailView extends AppCompatActivity {
             threadPA.start();
             threadPA.join();
             result2 = apigetPA.getResult();
-            System.out.println(result2);
             result2 = result2.replace("}{", "};{");
-            String[] tmp2 = result.split(";");
+            String[] tmp2 = result2.split(";");
 
             Gson gsonPA = new Gson();
             for (String x : tmp2){
-                System.out.println(x);
                 Pflanzenart gsonObjPA = gsonPA.fromJson(x, Pflanzenart.class);
                 pflanzenartenListe.add(gsonObjPA);
             }
-
-
-
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -100,8 +94,8 @@ public class PflanzeDetailView extends AppCompatActivity {
             if(pflanze.getPflanzenID() == Integer.parseInt(plant)) {
                 plantname.setText(pflanze.getPflanzenname());
                 for(Pflanzenart pflanzenart : pflanzenartenListe){
-                    if(pflanze.getPflanzeartname() == pflanzenart.getBezeichnung()){
-                        luftfeuchtigkeit.setText(pflanzenart.getLuftfeuchtigkeit());
+                    if(pflanze.getPflanzeartname().equals(pflanzenart.getBezeichnung())){
+                        luftfeuchtigkeit.setText(pflanzenart.getLuftfeuchtigkeit().toString());
                         giessen.setText(pflanzenart.getWasserzyklus().toString());
                         topfgroesse.setText(pflanzenart.getTopfgroesse().toString());;
                         erde.setText(pflanzenart.getErde());;
