@@ -130,14 +130,14 @@ public class HomeScreenView extends AppCompatActivity {
             linearLayout.setOrientation(LinearLayout.VERTICAL);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.gravity = Gravity.CENTER;
-            layoutParams.setMargins(75,20,20,20);
+            layoutParams.setMargins(75,20,50,20);
             linearLayout.setLayoutParams(layoutParams);
             linearLayout.setId(i);
 
             //TextView
             TextView textView = new TextView(this);
             LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params1.setMargins(175, 30, 30, 30);
+            params1.setMargins(200, 30, 30, 30);
             params1.gravity = Gravity.CENTER;
             textView.setLayoutParams(params1);
             textView.setTextSize(18);
@@ -166,33 +166,52 @@ public class HomeScreenView extends AppCompatActivity {
             mTableLayout.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
             mTableLayout.setGravity(Gravity.CENTER_HORIZONTAL);
 
-            for(int l = 0; l < tmpPfl.size();) {
+            for(int l = 0; l <= tmpPfl.size();) {
                 TableRow a = new TableRow(this);
                 TableRow.LayoutParams param = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
                 a.setLayoutParams(param);
                 a.setGravity(Gravity.CENTER_VERTICAL);
 
-                for (int y = 0; (y < 3) && (l < tmpPfl.size()); y++) {
-                    Button x = new Button(this);
-                    x.setText(tmpPfl.get(l).Pflanzenname);
-                    x.setGravity(Gravity.CENTER);
-                    TableRow.LayoutParams par = new TableRow.LayoutParams(y);
-                    x.setLayoutParams(par);
-                    x.setPadding(40, 40, 40, 40);
-                    int ids = tmpPfl.get(l).getPflanzenID();
-                    String idsPl = tmpPfl.get(l).getPflanzenID().toString();
-                    x.setId(ids);
-                    x.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent i  = new Intent(HomeScreenView.this, PflanzeDetailView.class);
-                            i.putExtra(PflanzeDetailView.SESSIONID,session);
-                            i.putExtra(PflanzeDetailView.USERNAME,name);
-                            i.putExtra(PflanzeDetailView.PLANT_KEY,idsPl);
-                            startActivity(i);
-                        }
-                    });
-                    a.addView(x);
+                for (int y = 0; (y < 2) && (l <= tmpPfl.size()); y++) {
+                    if(l < (tmpPfl.size())) {
+                        Button x = new Button(this);
+                        x.setText(tmpPfl.get(l).Pflanzenname);
+                        x.setGravity(Gravity.CENTER);
+                        TableRow.LayoutParams par = new TableRow.LayoutParams(y);
+                        x.setLayoutParams(par);
+                        int ids = tmpPfl.get(l).getPflanzenID();
+                        String idsPl = tmpPfl.get(l).getPflanzenID().toString();
+                        x.setId(ids);
+                        x.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent i = new Intent(HomeScreenView.this, PflanzeDetailView.class);
+                                i.putExtra(PflanzeDetailView.SESSIONID, session);
+                                i.putExtra(PflanzeDetailView.USERNAME, name);
+                                i.putExtra(PflanzeDetailView.PLANT_KEY, idsPl);
+                                startActivity(i);
+                            }
+                        });
+                        a.addView(x);
+                    }
+                    else if(l == (tmpPfl.size())){
+                        Button end = new Button(this);
+                        end.setText("+");
+                        end.setTextSize(20);
+                        end.setGravity(Gravity.CENTER);
+                        TableRow.LayoutParams endpar = new TableRow.LayoutParams(y);
+                        end.setLayoutParams(endpar);
+                        end.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent i  = new Intent(HomeScreenView.this, NewPflanzeView.class);
+                                i.putExtra(PflanzeDetailView.SESSIONID,session);
+                                i.putExtra(PflanzeDetailView.USERNAME,name);
+                                startActivity(i);
+                            }
+                        });
+                        a.addView(end);
+                    }
                     l++;
                 }
                 mTableLayout.addView(a);
@@ -222,7 +241,6 @@ public class HomeScreenView extends AppCompatActivity {
                 //Pflanzenarten
                 Gson gsonPA = new Gson();
                 for (String x : pflanzenA){
-                    System.out.println(x);
                     Pflanzenart gsonObjPA = gsonPA.fromJson(x, Pflanzenart.class);
                     pflanzenarten.add(gsonObjPA);
                 }
