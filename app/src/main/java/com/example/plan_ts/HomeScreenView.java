@@ -9,12 +9,15 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
@@ -27,8 +30,6 @@ public class HomeScreenView extends AppCompatActivity {
     public static final String USERNAME = "H_user";
     public String session;
     public String name;
-    private Button plantadd;
-    private Button plant1;
     private Button gruppenbtn;
     String out;
 
@@ -46,8 +47,6 @@ public class HomeScreenView extends AppCompatActivity {
 
         session = getIntent().getStringExtra(SESSIONID);
         name = getIntent().getStringExtra(USERNAME);
-        plant1 = findViewById(R.id.home_plant1);
-        plantadd = findViewById(R.id.home_plantadd);
         gruppenbtn = findViewById(R.id.gruppen_btn);
 
         //Initialize Data for HomeScreen of User
@@ -59,28 +58,11 @@ public class HomeScreenView extends AppCompatActivity {
                 onButtonShowPopupWindowClick(v);
             }
         });
-        plant1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(HomeScreenView.this, PflanzeDetailView.class);
-                i.putExtra(PflanzeDetailView.PLANT_KEY,("Plant1"));
-                i.putExtra(PflanzeDetailView.SESSIONID,SESSIONID);
-                i.putExtra(PflanzeDetailView.USERNAME,USERNAME);
-                startActivity(i);
-            }
-        });
-        plantadd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(HomeScreenView.this, NewPflanzeView.class);
-                i.putExtra(NewPflanzeView.SESSIONID,SESSIONID);
-                i.putExtra(NewPflanzeView.USERNAME,USERNAME);
-                startActivity(i);
-            }
-        });
     }
 
     public void onButtonShowPopupWindowClick(View view) {
+
+        selectedGoups = new ArrayList<>();
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.home_group_popup, null);
@@ -93,7 +75,7 @@ public class HomeScreenView extends AppCompatActivity {
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
         TableLayout tab_lay = (TableLayout) popupView.findViewById(R.id.tab_lay);
-        for(int i = 0; i < gruppen.size(); ){
+        for(int i = 0; i < gruppen.size();){
             TableRow a = new TableRow(this);
             TableRow.LayoutParams param = new TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT,
@@ -131,10 +113,93 @@ public class HomeScreenView extends AppCompatActivity {
         selectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SelectedGroups();
                 popupWindow.dismiss();
                 return;
             }
         });
+    }
+
+    private void SelectedGroups() {
+
+        LinearLayout scrollView = findViewById(R.id.homeScrollView);
+
+        for(int i = 0; i < selectedGoups.size(); i++){
+            //LinearLayout
+            LinearLayout linearLayout = new LinearLayout(this);
+            linearLayout.setOrientation(LinearLayout.VERTICAL);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.gravity = Gravity.CENTER;
+            layoutParams.setMargins(75,20,20,20);
+            linearLayout.setLayoutParams(layoutParams);
+            linearLayout.setId(i);
+
+            //TextView
+            TextView textView = new TextView(this);
+            LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params1.setMargins(175, 30, 30, 30);
+            params1.gravity = Gravity.CENTER;
+            textView.setLayoutParams(params1);
+            textView.setTextSize(18);
+            String gruppenname="";
+            for(Gruppe g : gruppen){
+                if(g.getGruppenID() == selectedGoups.get(i)){
+                    gruppenname = g.getGruppenname();
+                    break;
+                }else{
+                    gruppenname ="No Group found";
+                }
+            }
+            textView.setText(gruppenname);
+            linearLayout.addView(textView);
+
+            List<Pflanze> tmpPfl = new ArrayList();
+            System.out.println(userPflanzen.size());
+            for(int z = 0; z < userPflanzen.size(); z++){
+                if(userPflanzen.get(z).Gruppenname.equals(gruppenname)){
+                    tmpPfl.add(userPflanzen.get(z));
+                }
+            }
+
+            //TableLayout
+            TableLayout mTableLayout = new TableLayout(this);
+            mTableLayout.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+            mTableLayout.setGravity(Gravity.CENTER_HORIZONTAL);
+
+            for(int l = 0; l < tmpPfl.size();) {
+                TableRow a = new TableRow(this);
+                TableRow.LayoutParams param = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
+                a.setLayoutParams(param);
+                a.setGravity(Gravity.CENTER_VERTICAL);
+
+                for (int y = 0; (y < 3) && (l < tmpPfl.size()); y++) {
+                    Button x = new Button(this);
+                    x.setText(tmpPfl.get(l).Pflanzenname);
+                    x.setGravity(Gravity.CENTER);
+                    TableRow.LayoutParams par = new TableRow.LayoutParams(y);
+                    x.setLayoutParams(par);
+                    x.setPadding(40, 40, 40, 40);
+                    int ids = tmpPfl.get(l).getPflanzenID();
+                    String idsPl = tmpPfl.get(l).getPflanzenID().toString();
+                    x.setId(ids);
+                    x.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent i  = new Intent(HomeScreenView.this, PflanzeDetailView.class);
+                            i.putExtra(PflanzeDetailView.SESSIONID,session);
+                            i.putExtra(PflanzeDetailView.USERNAME,name);
+                            i.putExtra(PflanzeDetailView.PLANT_KEY,idsPl);
+                            startActivity(i);
+                        }
+                    });
+                    a.addView(x);
+                    l++;
+                }
+                mTableLayout.addView(a);
+            }
+            linearLayout.addView(mTableLayout);
+            scrollView.addView(linearLayout);
+        }
     }
 
     private void Initialize() {
