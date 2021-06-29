@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@drawable/layout_bg"
     android:orientation="vertical">
 
@@ -21,7 +21,7 @@
             android:text="Pflanzen Auswahl"/>
     </LinearLayout>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:id="@+id/ButtonLayout"
         android:layout_centerInParent="true"
         android:layout_margin="10dp"
@@ -29,22 +29,25 @@
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         android:orientation="vertical">
-        <TableLayout
-            android:id="@+id/tab_lay"
-            android:layout_width="fill_parent"
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="520dp">
+            <TableLayout
+                android:id="@+id/tab_lay"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:stretchColumns="*" />
+        </ScrollView>
+        <Button
+            android:id="@+id/SelectBtn"
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:stretchColumns="*"
-            android:gravity="center_vertical" />
+            android:textSize="15sp"
+            android:backgroundTint="@color/blue"
+            android:text="Auswählen"/>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/SelectBtn"
-        android:layout_margin="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:backgroundTint="@color/blue"
-        android:text="Auswählen"/>
-
 </LinearLayout>
