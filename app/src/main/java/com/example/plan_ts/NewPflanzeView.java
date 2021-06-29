@@ -177,9 +177,9 @@ public class NewPflanzeView extends AppCompatActivity implements Spinner.OnItemS
         String groesse= newtopfgroesse.getText().toString();
         String pflanzenart= addPlant_spinner.getSelectedItem().toString();
         try {
-            String jsonLoginData = "{\"user\":\"" + name + "\",\"sessionid\":\"" + session +"\"}";
+            String jsonLoginData = "{\"user\":\"" + name + "\",\"sessionid\":" + session +"}";
             String jsonBody = "{\"Pflanzenname\":\"" + pflanzenname + "\",\"Bild\":\"" + bild +"\",\"Gegossen\":\"" + gegossen + "\",\"Groesse\":\"" + groesse + "\",\"Username\":\"" + name + "\",\"Pflanzeartname\":\"" + pflanzenart + "\",\"Gruppenname\":\"" + gruppenname +"\"}";
-            String json = "{\"actionstring\":\"" + jsonBody + "\",\"USD\":\"" + jsonLoginData +"\"}";
+            String json = "{\"actionstring\": \"" + jsonBody + "\",\"usd\" :" + jsonLoginData +"}";
             System.out.println(json);
 
             URL url = new URL("https://10.0.0.152:45455/api/Plan_ts/AddPflanze");

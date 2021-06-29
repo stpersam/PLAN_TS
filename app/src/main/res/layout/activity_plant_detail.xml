@@ -18,7 +18,7 @@
             android:backgroundTint="@color/blue"
             android:drawableTop="@drawable/back_foreground">
         </Button>
-        <TextView
+        <EditText
             android:id="@+id/plantName"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="20dp"
@@ -27,8 +27,15 @@
             android:text="Plant 1"
             android:textColor="@color/white"
             android:textStyle="bold"
-            android:textSize="30dp">
-        </TextView>
+            android:textSize="25dp">
+        </EditText>
+        <Button
+            android:id="@+id/Plant_UPD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="320dp"
+            android:backgroundTint="@color/blue"
+            android:drawableTop="@drawable/ic_saveplant_foreground"></Button>
     </RelativeLayout>
 
     <RelativeLayout
