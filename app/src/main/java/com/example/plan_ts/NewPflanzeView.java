@@ -76,7 +76,7 @@ public class NewPflanzeView extends AppCompatActivity implements Spinner.OnItemS
         newPlant_ADD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postNewPlant();
+                //postNewPlant();
             }
         });
 
