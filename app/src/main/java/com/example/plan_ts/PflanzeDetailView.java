@@ -106,9 +106,9 @@ public class PflanzeDetailView extends AppCompatActivity {
                         int id = context.getResources().getIdentifier(x, "drawable", context.getPackageName());
                         Plant_Image.setImageResource(id);
 
-                        luftfeuchtigkeit.setText(pflanzenart.getLuftfeuchtigkeit().toString());
-                        giessen.setText(pflanzenart.getWasserzyklus().toString());
-                        topfgroesse.setText(pflanzenart.getTopfgroesse().toString());;
+                        luftfeuchtigkeit.setText(pflanzenart.getLuftfeuchtigkeit().toString() + "%");
+                        giessen.setText(pflanzenart.getWasserzyklus().toString() + " Tage");
+                        topfgroesse.setText(pflanzenart.getTopfgroesse().toString() + "cm");;
                         erde.setText(pflanzenart.getErde());;
                         licht.setText(pflanzenart.getLichtbeduerfnisse());
                         break;
@@ -124,5 +124,6 @@ public class PflanzeDetailView extends AppCompatActivity {
                 finish();
             }
         });
+
     }
 }

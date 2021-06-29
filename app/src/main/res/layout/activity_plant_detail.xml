@@ -20,7 +20,7 @@
         </Button>
         <TextView
             android:id="@+id/plantName"
-            android:layout_marginLeft="160dp"
+            android:layout_marginLeft="100dp"
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,20 +39,20 @@
 
         <ImageView
             android:id="@+id/Plant_Image"
-            android:layout_width="222dp"
-            android:layout_height="141dp"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
             android:layout_marginStart="5dp"
-
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-            android:src="@drawable/test"></ImageView>
+            android:layout_gravity="left"
+            android:clickable="true"
+            android:src="@drawable/add"></ImageView>
 
         <TextView
             android:layout_marginTop="170dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Pflanzenart:"
@@ -62,8 +62,8 @@
         <Spinner
             android:id="@+id/addPlant_spinner"
             android:layout_marginTop="220dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_width="match_parent"
             android:background="@color/lightblue"
             android:layout_height="40dp"></Spinner>
@@ -211,7 +211,7 @@
                     android:id="@+id/erde"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="-"
+                    android:text="    -  "
                     android:textColor="@color/white"
                     android:textSize="20dp"
                     android:textStyle="bold"></TextView>
@@ -232,9 +232,9 @@
                 </ImageView>
                 <TextView
                     android:id="@+id/licht"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="-"
+                    android:text="    -"
                     android:textColor="@color/white"
                     android:textSize="20dp"
                     android:textStyle="bold"></TextView>

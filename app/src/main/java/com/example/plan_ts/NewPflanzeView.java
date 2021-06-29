@@ -1,8 +1,5 @@
 package com.example.plan_ts;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -12,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 
@@ -170,7 +169,7 @@ public class NewPflanzeView extends AppCompatActivity implements Spinner.OnItemS
         try {
             String jsonBody = "{\"pflanzenname\":\"" + pflanzenname + "\",\"bild\":\"" + bild +"\",\"gegossen\":\"" + gegossen + "\",\"groesse\":\"" + groesse + "\",\"username\":\"" + name + "\",\"pflanzenart\":\"" + pflanzenart +"\"}";
             System.out.println(jsonBody);
-            URL url = new URL("https://10.0.0.152:45455/api/Plan_ts/AddPflanze");
+            URL url = new URL("https://192.168.179.1:45455/api//Plan_ts/AddPflanze");
             HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
             httpConnection.setRequestMethod("POST");
             httpConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
