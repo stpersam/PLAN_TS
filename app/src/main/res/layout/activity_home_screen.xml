@@ -52,7 +52,8 @@
     android:foregroundGravity="center"
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
-    android:value="0">
+    android:value="0"
+    android:enabled="false">
 </com.google.android.material.slider.Slider>
         <TextView
             android:id="@+id/bewaesserung"
@@ -65,6 +66,7 @@
             android:textSize="20dp"
             android:layout_centerHorizontal="true"
             android:text="Bitte mind. 1 Gruppe auswählen"
+
             ></TextView>
     </RelativeLayout>
 

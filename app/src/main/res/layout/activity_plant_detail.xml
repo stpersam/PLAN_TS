@@ -4,32 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PflanzeDetailView"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".PflanzeDetailView">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="@color/blue">
+
         <Button
             android:id="@+id/Plant_back"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_centerVertical="true"
             android:backgroundTint="@color/blue"
-            android:drawableTop="@drawable/back_foreground">
-        </Button>
+            android:drawableTop="@drawable/back_foreground"></Button>
+
         <EditText
             android:id="@+id/plantName"
-            android:layout_marginLeft="60dp"
-            android:layout_marginTop="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="15dp"
             android:text="Plant 1"
             android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="25dp">
-        </EditText>
+            android:textSize="25dp"
+            android:textStyle="bold"></EditText>
 
         <Button
             android:id="@+id/Plant_UPD"
@@ -58,53 +58,94 @@
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
-            android:id="@+id/Plant_Image"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_gravity="left"
-            android:clickable="true"
-            android:src="@drawable/add2"></ImageView>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+
+            <ImageView
+                android:id="@+id/Plant_Image"
+                android:layout_width="250dp"
+                android:layout_height="150dp"
+                android:layout_gravity="left"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:clickable="true"
+                android:src="@drawable/add2"
+                ></ImageView>
+            <LinearLayout
+                android:layout_width="140dp"
+                android:layout_height="155dp"
+                android:orientation="vertical"
+                >
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderbewaesserungdetail"
+                    android:layout_width="140dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_gravity="left"
+                    android:foregroundGravity="left"
+                    android:gravity="left"
+                    android:enabled="false"
+                    android:rotation="270"
+                    app:haloColor="@color/lightblue"
+                    app:thumbColor="#87CEEB 	">
+                </com.google.android.material.slider.Slider>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    android:text="Wasserstand"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:layout_marginTop="40dp"
+                    ></TextView></LinearLayout>
+
+        </LinearLayout>
+
 
         <TextView
-            android:layout_marginTop="170dp"
-            android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="170dp"
             android:text="Pflanzenart:"
+            android:textColor="@color/blue"
             android:textSize="22dp"
-            android:textStyle="bold"
-            android:textColor="@color/blue"></TextView>
+            android:textStyle="bold"></TextView>
+
         <Spinner
             android:id="@+id/addPlant_spinner"
-            android:layout_marginTop="200dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_width="match_parent"
-            android:background="@color/lightblue"
-            android:layout_height="40dp"></Spinner>
-        <TextView
-            android:layout_marginTop="240dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="200dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/lightblue"></Spinner>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="240dp"
             android:text="Gruppe:"
+            android:textColor="@color/blue"
             android:textSize="22dp"
-            android:textStyle="bold"
-            android:textColor="@color/blue"></TextView>
+            android:textStyle="bold"></TextView>
+
         <Spinner
             android:id="@+id/group_spinner"
-            android:layout_marginTop="270dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_width="match_parent"
-            android:background="@color/lightblue"
-            android:layout_height="40dp"></Spinner>
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="270dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/lightblue"></Spinner>
     </RelativeLayout>
 
     <RelativeLayout
@@ -204,10 +245,12 @@
             android:textColor="@color/blue"
             android:textSize="20dp"
             android:textStyle="bold"></TextView>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <LinearLayout
                 android:layout_width="120dp"
                 android:layout_height="90dp"
@@ -217,11 +260,12 @@
                 android:orientation="vertical"
                 android:paddingLeft="0dp"
                 android:paddingTop="10dp">
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:src="@drawable/plant_foreground">
-                </ImageView>
+                    android:src="@drawable/plant_foreground"></ImageView>
+
                 <TextView
                     android:id="@+id/topfgroesse"
                     android:layout_width="match_parent"
@@ -232,6 +276,7 @@
                     android:textSize="18dp"
                     android:textStyle="bold"></TextView>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="120dp"
                 android:layout_height="90dp"
@@ -241,11 +286,12 @@
                 android:orientation="vertical"
                 android:paddingLeft="0dp"
                 android:paddingTop="10dp">
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:src="@drawable/dirt_foreground">
-                </ImageView>
+                    android:src="@drawable/dirt_foreground"></ImageView>
+
                 <TextView
                     android:id="@+id/erde"
                     android:layout_width="match_parent"
@@ -256,6 +302,7 @@
                     android:textSize="18dp"
                     android:textStyle="bold"></TextView>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="120dp"
                 android:layout_height="90dp"
@@ -265,11 +312,12 @@
                 android:orientation="vertical"
                 android:paddingLeft="0dp"
                 android:paddingTop="10dp">
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:src="@drawable/light_foreground">
-                </ImageView>
+                    android:src="@drawable/light_foreground"></ImageView>
+
                 <TextView
                     android:id="@+id/licht"
                     android:layout_width="match_parent"

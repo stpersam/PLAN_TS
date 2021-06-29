@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.slider.Slider;
 import com.google.gson.Gson;
 
 import java.io.BufferedWriter;
@@ -22,6 +23,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,11 +37,11 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnItemSelectedListener{
+public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnItemSelectedListener {
     public static final String PLANT_KEY = "Plant";
     public static final String SESSIONID = "Plant_Session";
     public static final String USERNAME = "Plant_Name";
-    public static final String  GRUPPENNAME = "PlantGruppenname";
+    public static final String GRUPPENNAME = "PlantGruppenname";
     public String session;
     public String name;
     public String plant;
@@ -56,6 +58,7 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
     private String result2;
     private Button Plant_UPD;
     private Spinner group_spinner;
+    private Slider bewaesserung;
 
     private Button Plant_DEL;
     public String gruppenname;
@@ -64,6 +67,7 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
     private List<Pflanzenart> pflanzenartenListe = new ArrayList<>();
     List<Pflanzenart> tmp = new ArrayList();
     List<Gruppe> tmpgruppe = new ArrayList();
+    public Pflanze detailplant;
 
     public String APIURL = "https://192.168.179.1:45455/api/Plan_ts/";
 
@@ -84,6 +88,7 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
         plantname = findViewById(R.id.plantName);
         pflanzenart = findViewById(R.id.addPlant_spinner);
         luftfeuchtigkeit = findViewById(R.id.luftfeuchtigkeit);
+        bewaesserung = findViewById(R.id.sliderbewaesserungdetail);
         giessen = findViewById(R.id.giessen);
         topfgroesse = findViewById(R.id.topfgroesse);
         erde = findViewById(R.id.erde);
@@ -91,6 +96,7 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
         Plant_UPD = findViewById(R.id.Plant_UPD);
         Plant_DEL = findViewById(R.id.Plant_DEL);
         group_spinner = findViewById(R.id.group_spinner);
+
 
         String[] arraySpinner = getPflanzenarten();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arraySpinner);
@@ -114,11 +120,11 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
             String[] tmp = result.split(";");
 
             Gson gsonPF = new Gson();
-            for (String a : tmp){
+            for (String a : tmp) {
                 Pflanze gsonObjPF = gsonPF.fromJson(a, Pflanze.class);
                 userPflanzen.add(gsonObjPF);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -132,33 +138,34 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
             String[] tmp2 = result2.split(";");
 
             Gson gsonPA = new Gson();
-            for (String x : tmp2){
+            for (String x : tmp2) {
                 Pflanzenart gsonObjPA = gsonPA.fromJson(x, Pflanzenart.class);
                 pflanzenartenListe.add(gsonObjPA);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        for(int h = 0; h < arraySpinnerGruppe.length; h++){
-            if(gruppenname.equals(arraySpinnerGruppe[h])){
+        for (int h = 0; h < arraySpinnerGruppe.length; h++) {
+            if (gruppenname.equals(arraySpinnerGruppe[h])) {
                 group_spinner.setSelection(h);
                 break;
             }
         }
 
-        for(Pflanze pflanze : userPflanzen){
-            if(pflanze.getPflanzenID() == Integer.parseInt(plant)) {
+        for (Pflanze pflanze : userPflanzen) {
+            if (pflanze.getPflanzenID() == Integer.parseInt(plant)) {
+                detailplant = pflanze;
                 plantname.setText(pflanze.getPflanzenname());
-                for(Pflanzenart pflanzenarts : pflanzenartenListe){
-                    if(pflanze.getPflanzeartname().equals(pflanzenarts.getBezeichnung())){
+                for (Pflanzenart pflanzenarts : pflanzenartenListe) {
+                    if (pflanze.getPflanzeartname().equals(pflanzenarts.getBezeichnung())) {
                         String x = (pflanze.Bild);
                         Context context = Plant_Image.getContext();
                         int id = context.getResources().getIdentifier(x, "drawable", context.getPackageName());
                         Plant_Image.setImageResource(id);
 
-                        for(int i = 0; i < arraySpinner.length; i++){
-                            if(pflanze.getPflanzeartname().equals(arraySpinner[i])){
+                        for (int i = 0; i < arraySpinner.length; i++) {
+                            if (pflanze.getPflanzeartname().equals(arraySpinner[i])) {
                                 pflanzenart.setSelection(i);
                                 break;
                             }
@@ -206,16 +213,16 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
             String[] tmpGP = resultGP.split(";");
 
             Gson gsonGP = new Gson();
-            for (String gpx : tmpGP){
+            for (String gpx : tmpGP) {
                 Gruppe gsonObjGP = gsonGP.fromJson(gpx, Gruppe.class);
                 tmpgruppe.add(gsonObjGP);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         String[] listGruppen = new String[tmpgruppe.size()];
-        for(int i = 0; i < tmpgruppe.size(); i++){
+        for (int i = 0; i < tmpgruppe.size(); i++) {
             listGruppen[i] = tmpgruppe.get(i).getGruppenname();
         }
         return listGruppen;
@@ -228,15 +235,29 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
         return sdf.format(date);
     }
 
+    public static Date nower() {
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.GERMANY);
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.GERMANY).parse(sdf.format(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
     private void sendPost(String URL) {
         TrustManager[] trustAllCerts = new TrustManager[]{
                 new X509TrustManager() {
                     public java.security.cert.X509Certificate[] getAcceptedIssuers() {
                         return null;
                     }
+
                     public void checkClientTrusted(
                             java.security.cert.X509Certificate[] certs, String authType) {
                     }
+
                     public void checkServerTrusted(
                             java.security.cert.X509Certificate[] certs, String authType) {
                     }
@@ -247,17 +268,18 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
             SSLContext sc = SSLContext.getInstance("SSL");
             sc.init(null, trustAllCerts, new java.security.SecureRandom());
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         String pflanzenname = plantname.getText().toString();
-        String bild= "plant1";
+        String bild = "plant1";
         String gegossen = now();
-        String groesse= topfgroesse.getText().toString();
-        String pflA= pflanzenart.getSelectedItem().toString();
+        String groesse = topfgroesse.getText().toString();
+        String pflA = pflanzenart.getSelectedItem().toString();
         String gruppe = group_spinner.getSelectedItem().toString();
         try {
-            String jsonLoginData = "\"user\":\"" + name + "\",\"sessionid\":" + session +"";
-            String jsonBody = "{\"Pflanzen_ID\":\"" + plant + "\",\"Pflanzenname\":\"" + pflanzenname + "\",\"Bild\":\"" + bild +"\",\"Gegossen\":\"" + gegossen + "\",\"Groesse\":\"" + groesse + "\",\"Username\":\"" + name + "\",\"Pflanzeartname\":\"" + pflA + "\",\"Gruppenname\":\"" + gruppe +"\"}";
+            String jsonLoginData = "\"user\":\"" + name + "\",\"sessionid\":" + session + "";
+            String jsonBody = "{\"Pflanzen_ID\":\"" + plant + "\",\"Pflanzenname\":\"" + pflanzenname + "\",\"Bild\":\"" + bild + "\",\"Gegossen\":\"" + gegossen + "\",\"Groesse\":\"" + groesse + "\",\"Username\":\"" + name + "\",\"Pflanzeartname\":\"" + pflA + "\",\"Gruppenname\":\"" + gruppe + "\"}";
             String json = "{\"pflanze\":" + jsonBody + ",\"usd\":{" + jsonLoginData + "},\"Pflanzen_ID\":" + plant + "}";
             System.out.println(json);
 
@@ -281,7 +303,7 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
             scanner.useDelimiter("\\A");
             String out = "";
 
-            if(scanner.hasNext()){
+            if (scanner.hasNext()) {
                 out = scanner.next();
             }
 
@@ -290,7 +312,7 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
         }
     }
 
-    public String[] getPflanzenarten(){
+    public String[] getPflanzenarten() {
         List<Pflanzenart> tmp = new ArrayList();
         String result2;
 
@@ -304,16 +326,16 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
             String[] tmp2 = result2.split(";");
 
             Gson gsonPA = new Gson();
-            for (String x : tmp2){
+            for (String x : tmp2) {
                 Pflanzenart gsonObjPA = gsonPA.fromJson(x, Pflanzenart.class);
                 tmp.add(gsonObjPA);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         String[] pflanzenarten = new String[tmp.size()];
-        for(int i = 0; i < tmp.size(); i++){
+        for (int i = 0; i < tmp.size(); i++) {
             pflanzenarten[i] = tmp.get(i).getBezeichnung();
         }
         return pflanzenarten;
@@ -335,28 +357,53 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
             String[] tmp2 = result2.split(";");
 
             Gson gsonPA = new Gson();
-            for (String x : tmp2){
+            for (String x : tmp2) {
                 Pflanzenart gsonObjPA = gsonPA.fromJson(x, Pflanzenart.class);
                 tmp.add(gsonObjPA);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        for(Pflanzenart x : tmp){
-            if(pflanzA.equals(x.getBezeichnung())){
+        for (Pflanzenart x : tmp) {
+            if (pflanzA.equals(x.getBezeichnung())) {
                 pfl = x;
             }
         }
-        if(pfl != null) {
-            luftfeuchtigkeit.setText(pfl.getLuftfeuchtigkeit().toString()+ "%");
+        if (pfl != null) {
+            luftfeuchtigkeit.setText(pfl.getLuftfeuchtigkeit().toString() + "%");
             giessen.setText(pfl.getWasserzyklus().toString() + " Tage");
             topfgroesse.setText(pfl.getTopfgroesse().toString() + "cm");
             erde.setText(pfl.getErde());
             licht.setText(pfl.getLichtbeduerfnisse());
+
+
+            Calendar cal = Calendar.getInstance();
+
+            Date date = nower();
+            try {
+                date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.GERMANY).parse(detailplant.Gegossen);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            long wasserzyklus = 0;
+            wasserzyklus = pfl.getWasserzyklus().longValue();
+            float gießstatus = (((nower().getTime() - (date.getTime())) / 86400000));
+            if (gießstatus > wasserzyklus) {
+                gießstatus = 0;
+            } else {
+                gießstatus = 1 - (gießstatus / wasserzyklus);
+                //gießstatus = gießstatus / 100;
+            }
+            bewaesserung.setValue(gießstatus);
+
+
         }
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) { }
+    public void onNothingSelected(AdapterView<?> parent) {
+    }
+
+
 }
