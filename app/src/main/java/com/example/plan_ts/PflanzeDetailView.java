@@ -189,7 +189,7 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
 
             OutputStream os = httpConnection.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-            writer.write(jsonBody);
+            writer.write(json);
             writer.flush();
             writer.close();
             os.close();
