@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 
 import java.io.BufferedWriter;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -25,6 +26,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Scanner;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public class NewPflanzeView extends AppCompatActivity implements Spinner.OnItemSelectedListener{
     private Button newPlant_back;
@@ -169,6 +176,26 @@ public class NewPflanzeView extends AppCompatActivity implements Spinner.OnItemS
     }
 
     public void postNewPlant(){
+        TrustManager[] trustAllCerts = new TrustManager[]{
+                new X509TrustManager() {
+                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
+                    public void checkClientTrusted(
+                            java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+                    public void checkServerTrusted(
+                            java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+                }
+        };
+        // Install the all-trusting trust manager
+        try {
+            SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+        } catch (Exception e) {}
+
         String pflanzenname = plantName.getText().toString();
         String bild= "plant1";
         String gegossen = now();
@@ -178,19 +205,12 @@ public class NewPflanzeView extends AppCompatActivity implements Spinner.OnItemS
             String jsonLoginData = "\"user\":\"" + name + "\",\"sessionid\":" + session +"";
             String jsonBody = "{\"Pflanzenname\":\"" + pflanzenname + "\",\"Bild\":\"" + bild +"\",\"Gegossen\":\"" + gegossen + "\",\"Groesse\":\"" + groesse + "\",\"Username\":\"" + name + "\",\"Pflanzeartname\":\"" + pflanzenart + "\",\"Gruppenname\":\"" + gruppenname +"\"}";
             String json = "{\"pflanze\":" + jsonBody + ",\"usd\":{" + jsonLoginData +"}}";
-
-            //String jsonBody = "{\"user\":\"" + username + "\",\"password\":\"" + password + "\"}";
-/*
-            String jsonLoginData = "{\"user\":\"" + name + "\",\"sessionid\":" + session +"}";
-            String jsonBody = "{\"Pflanzenname\":\"" + pflanzenname + "\",\"Bild\":\"" + bild +"\",\"Gegossen\":\"" + gegossen + "\",\"Groesse\":\"" + groesse + "\",\"Username\":\"" + name + "\",\"Pflanzeartname\":\"" + pflanzenart + "\",\"Gruppenname\":\"" + gruppenname +"\"}";
-            String json = "{\"actionstring\":\"" + jsonBody + "\",\"usd\":" + jsonLoginData +"}";
-  */
             System.out.println(json);
 
             URL url = new URL("https://10.0.0.152:45455/api/Plan_ts/AddPflanze");
             HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
             httpConnection.setRequestMethod("POST");
-            httpConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+            httpConnection.setRequestProperty("Content-Type", "application/json;");
             httpConnection.setRequestProperty("Accept", "text/plain");
             httpConnection.setDoOutput(true);
             httpConnection.setDoInput(true);
@@ -202,6 +222,14 @@ public class NewPflanzeView extends AppCompatActivity implements Spinner.OnItemS
             writer.close();
             os.close();
 
+            InputStream in = httpConnection.getInputStream();
+            Scanner scanner = new Scanner(in);
+            scanner.useDelimiter("\\A");
+            String out = "";
+
+            if(scanner.hasNext()){
+                out = scanner.next();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
