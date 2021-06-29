@@ -63,7 +63,8 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="20dp"
-            android:text="30% Pflanzen sind bewässert"
+            android:layout_centerHorizontal="true"
+            android:text="Bitte mind. 1 Gruppe auswählen"
             ></TextView>
     </RelativeLayout>
 
