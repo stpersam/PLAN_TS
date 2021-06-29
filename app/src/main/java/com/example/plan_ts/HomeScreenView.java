@@ -1,27 +1,26 @@
 package com.example.plan_ts;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.DynamicLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.material.tabs.TabLayout;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +30,7 @@ public class HomeScreenView extends AppCompatActivity {
     public String session;
     public String name;
     private Button gruppenbtn;
+    private MaterialToolbar toolbar;
     String out;
 
     private List<Integer> selectedGoups = new ArrayList<>();
@@ -48,9 +48,19 @@ public class HomeScreenView extends AppCompatActivity {
         session = getIntent().getStringExtra(SESSIONID);
         name = getIntent().getStringExtra(USERNAME);
         gruppenbtn = findViewById(R.id.gruppen_btn);
+        toolbar = findViewById(R.id.topAppBar);
+
 
         //Initialize Data for HomeScreen of User
         Initialize();
+
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    onButtonShowMenuClick(v);
+            }
+        });
 
         gruppenbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +69,12 @@ public class HomeScreenView extends AppCompatActivity {
             }
         });
     }
+    public void onButtonShowMenuClick(View view) {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.menu_popup, null);
 
+        ImageButton addplantbtn= popupView.findViewById(R.id.AddPlant);
+    }
     public void onButtonShowPopupWindowClick(View view) {
 
         selectedGoups = new ArrayList<>();
@@ -79,7 +94,7 @@ public class HomeScreenView extends AppCompatActivity {
             TableRow a = new TableRow(this);
             TableRow.LayoutParams param = new TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT,
-                    TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
+                    300, 1.0f);
             param.setMargins(10, 10, 10, 10);
             a.setLayoutParams(param);
             a.setGravity(Gravity.CENTER_VERTICAL);
@@ -88,9 +103,10 @@ public class HomeScreenView extends AppCompatActivity {
                 Button x = new Button(this);
                 x.setText(gruppen.get(i).Gruppenname);
                 x.setGravity(Gravity.CENTER);
-                TableRow.LayoutParams par = new TableRow.LayoutParams(y);
+                TableRow.LayoutParams par = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,300,y);
                 x.setLayoutParams(par);
-                x.setPadding(40,40,40,40);
+
+
                 int ids = gruppen.get(i).GruppenID;
                 x.setId(ids);
                 x.setOnClickListener(new View.OnClickListener() {
