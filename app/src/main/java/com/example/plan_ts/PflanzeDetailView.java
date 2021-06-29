@@ -114,12 +114,20 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
         for(Pflanze pflanze : userPflanzen){
             if(pflanze.getPflanzenID() == Integer.parseInt(plant)) {
                 plantname.setText(pflanze.getPflanzenname());
-                for(Pflanzenart pflanzenart : pflanzenartenListe){
-                    if(pflanze.getPflanzeartname().equals(pflanzenart.getBezeichnung())){
+                for(Pflanzenart pflanzenarts : pflanzenartenListe){
+                    if(pflanze.getPflanzeartname().equals(pflanzenarts.getBezeichnung())){
                         String x = (pflanze.Bild);
                         Context context = Plant_Image.getContext();
                         int id = context.getResources().getIdentifier(x, "drawable", context.getPackageName());
                         Plant_Image.setImageResource(id);
+
+                        for(int i = 0; i < arraySpinner.length; i++){
+                            if(pflanze.getPflanzeartname().equals(arraySpinner[i])){
+                                pflanzenart.setSelection(i);
+                                break;
+                            }
+                        }
+
                         break;
                     }
                 }
