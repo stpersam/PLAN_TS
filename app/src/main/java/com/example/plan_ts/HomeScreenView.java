@@ -150,6 +150,7 @@ public class HomeScreenView extends AppCompatActivity {
                     gruppenname ="No Group found";
                 }
             }
+            final String nameDerGruppe = gruppenname;
             textView.setText(gruppenname);
             linearLayout.addView(textView);
 
@@ -205,8 +206,9 @@ public class HomeScreenView extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 Intent i  = new Intent(HomeScreenView.this, NewPflanzeView.class);
-                                i.putExtra(PflanzeDetailView.SESSIONID,session);
-                                i.putExtra(PflanzeDetailView.USERNAME,name);
+                                i.putExtra(NewPflanzeView.SESSIONID,session);
+                                i.putExtra(NewPflanzeView.USERNAME,name);
+                                i.putExtra(NewPflanzeView.GRUPPENNAME,nameDerGruppe);
                                 startActivity(i);
                             }
                         });
