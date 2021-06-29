@@ -2,6 +2,7 @@ package com.example.plan_ts;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -55,6 +56,7 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
     private String result;
     private String result2;
     private Button Plant_UPD;
+    private Spinner group_spinner;
 
     private Button Plant_DEL;
     public String gruppenname;
@@ -62,6 +64,7 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
     private List<Pflanze> userPflanzen = new ArrayList<>();
     private List<Pflanzenart> pflanzenartenListe = new ArrayList<>();
     List<Pflanzenart> tmp = new ArrayList();
+    List<Gruppe> tmpgruppe = new ArrayList();
 
     public String APIURL = "https://10.0.0.152:45455/api/Plan_ts/";
 
@@ -88,13 +91,19 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
         licht = findViewById(R.id.licht);
         Plant_UPD = findViewById(R.id.Plant_UPD);
         Plant_DEL = findViewById(R.id.Plant_DEL);
+        group_spinner = findViewById(R.id.group_spinner);
 
         String[] arraySpinner = getPflanzenarten();
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arraySpinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         pflanzenart.setAdapter(adapter);
         pflanzenart.setOnItemSelectedListener(PflanzeDetailView.this);
+
+        String[] arraySpinnerGruppe = getGruppe();
+        ArrayAdapter<String> adapterGruppe = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arraySpinnerGruppe);
+        adapterGruppe.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        group_spinner.setAdapter(adapterGruppe);
+        group_spinner.setOnItemSelectedListener(PflanzeDetailView.this);
 
         try {
             APIGET apiget = new APIGET(name, session, "GetUserPflanzen");
@@ -132,6 +141,13 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
             e.printStackTrace();
         }
 
+        for(int h = 0; h < arraySpinnerGruppe.length; h++){
+            if(gruppenname.equals(arraySpinnerGruppe[h])){
+                group_spinner.setSelection(h);
+                break;
+            }
+        }
+
         for(Pflanze pflanze : userPflanzen){
             if(pflanze.getPflanzenID() == Integer.parseInt(plant)) {
                 plantname.setText(pflanze.getPflanzenname());
@@ -148,7 +164,6 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
                                 break;
                             }
                         }
-
                         break;
                     }
                 }
@@ -162,7 +177,6 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
                 finish();
             }
         });
-
         Plant_UPD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,6 +192,34 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
             }
         });
 
+    }
+
+    private String[] getGruppe() {
+        String resultGP;
+
+        try {
+            APIGET apigetGP = new APIGET(name, session, "GetUserGruppen");
+            Thread threadGP = new Thread(apigetGP);
+            threadGP.start();
+            threadGP.join();
+            resultGP = apigetGP.getResult();
+            resultGP = resultGP.replace("}{", "};{");
+            String[] tmpGP = resultGP.split(";");
+
+            Gson gsonGP = new Gson();
+            for (String gpx : tmpGP){
+                Gruppe gsonObjGP = gsonGP.fromJson(gpx, Gruppe.class);
+                tmpgruppe.add(gsonObjGP);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        String[] listGruppen = new String[tmpgruppe.size()];
+        for(int i = 0; i < tmpgruppe.size(); i++){
+            listGruppen[i] = tmpgruppe.get(i).getGruppenname();
+        }
+        return listGruppen;
     }
 
     public static String now() {
@@ -213,9 +255,10 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
         String gegossen = now();
         String groesse= topfgroesse.getText().toString();
         String pflA= pflanzenart.getSelectedItem().toString();
+        String gruppe = group_spinner.getSelectedItem().toString();
         try {
             String jsonLoginData = "\"user\":\"" + name + "\",\"sessionid\":" + session +"";
-            String jsonBody = "{\"Pflanzen_ID\":\"" + plant + "\",\"Pflanzenname\":\"" + pflanzenname + "\",\"Bild\":\"" + bild +"\",\"Gegossen\":\"" + gegossen + "\",\"Groesse\":\"" + groesse + "\",\"Username\":\"" + name + "\",\"Pflanzeartname\":\"" + pflA + "\",\"Gruppenname\":\"" + gruppenname +"\"}";
+            String jsonBody = "{\"Pflanzen_ID\":\"" + plant + "\",\"Pflanzenname\":\"" + pflanzenname + "\",\"Bild\":\"" + bild +"\",\"Gegossen\":\"" + gegossen + "\",\"Groesse\":\"" + groesse + "\",\"Username\":\"" + name + "\",\"Pflanzeartname\":\"" + pflA + "\",\"Gruppenname\":\"" + gruppe +"\"}";
             String json = "{\"pflanze\":" + jsonBody + ",\"usd\":{" + jsonLoginData + "},\"Pflanzen_ID\":" + plant + "}";
             System.out.println(json);
 
