@@ -82,7 +82,7 @@ public class AddNewGroupView extends AppCompatActivity {
         selectPlants.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               //onButtonShowPopupWindowClick(v);
+               onButtonShowPopupWindowClick(v);
             }
         });
         saveGroup.setOnClickListener(new View.OnClickListener() {
