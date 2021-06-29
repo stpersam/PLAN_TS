@@ -55,11 +55,15 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
     private String result;
     private String result2;
     private Button Plant_UPD;
+
+    private Button Plant_DEL;
     public String gruppenname;
 
     private List<Pflanze> userPflanzen = new ArrayList<>();
     private List<Pflanzenart> pflanzenartenListe = new ArrayList<>();
     List<Pflanzenart> tmp = new ArrayList();
+
+    public String APIURL = "https://192.168.179.1:45455/api/Plan_ts/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +87,7 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
         erde = findViewById(R.id.erde);
         licht = findViewById(R.id.licht);
         Plant_UPD = findViewById(R.id.Plant_UPD);
+        Plant_DEL = findViewById(R.id.Plant_DEL);
 
         String[] arraySpinner = getPflanzenarten();
 
@@ -161,7 +166,15 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
         Plant_UPD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendPost();
+                sendPost(APIURL + "EditPflanze");
+                finish();
+            }
+        });
+        Plant_DEL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendPost(APIURL + "DeletePflanze");
+                finish();
             }
         });
 
@@ -174,7 +187,7 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
         return sdf.format(date);
     }
 
-    private void sendPost() {
+    private void sendPost(String URL) {
         TrustManager[] trustAllCerts = new TrustManager[]{
                 new X509TrustManager() {
                     public java.security.cert.X509Certificate[] getAcceptedIssuers() {
@@ -206,7 +219,7 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
             String json = "{\"pflanze\":" + jsonBody + ",\"usd\":{" + jsonLoginData + "},\"Pflanzen_ID\":" + plant + "}";
             System.out.println(json);
 
-            URL url = new URL("https://10.0.0.152:45455/api/Plan_ts/EditPflanze");
+            URL url = new URL(URL);
             HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
             httpConnection.setRequestMethod("POST");
             httpConnection.setRequestProperty("Content-Type", "application/json;");

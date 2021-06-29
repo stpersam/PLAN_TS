@@ -71,7 +71,7 @@ public class LoginRepository {
         } catch (Exception e) {}
 
         try {
-            URL url = new URL("https://10.0.0.152:45455/api/Plan_ts/Login");
+            URL url = new URL("https://192.168.179.1:45455/api/Plan_ts/Login");
             HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
             httpConnection.setRequestMethod("POST");
             httpConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");

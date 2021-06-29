@@ -29,13 +29,26 @@
             android:textStyle="bold"
             android:textSize="25dp">
         </EditText>
+
         <Button
             android:id="@+id/Plant_UPD"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="320dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="300dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="10dp"
             android:backgroundTint="@color/blue"
             android:drawableTop="@drawable/ic_saveplant_foreground"></Button>
+
+        <Button
+            android:id="@+id/Plant_DEL"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="350dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="@color/blue"
+            android:drawableTop="@drawable/del_icon_foreground"></Button>
     </RelativeLayout>
 
     <RelativeLayout

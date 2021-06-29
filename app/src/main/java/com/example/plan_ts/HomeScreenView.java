@@ -19,11 +19,16 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.slider.Slider;
 import com.google.gson.Gson;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class HomeScreenView extends AppCompatActivity {
     public static final String SESSIONID = "H_session";
@@ -33,6 +38,7 @@ public class HomeScreenView extends AppCompatActivity {
     private Button gruppenbtn;
     private MaterialToolbar toolbar;
     private TextView bewaesserung;
+    public Slider slider;
     String out;
 
     private List<Integer> selectedGoups = new ArrayList<>();
@@ -53,6 +59,7 @@ public class HomeScreenView extends AppCompatActivity {
         gruppenbtn = findViewById(R.id.gruppen_btn);
         toolbar = findViewById(R.id.topAppBar);
         bewaesserung = findViewById(R.id.bewaesserung);
+        slider = findViewById(R.id.Slider);
 
 
         //Initialize Data for HomeScreen of User
@@ -74,12 +81,19 @@ public class HomeScreenView extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Initialize();
+    }
+
     public void onButtonShowMenuClick(View view) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.menu_popup, null);
 
         ImageButton addplantbtn = popupView.findViewById(R.id.AddPlant);
         ImageButton AddGroup = popupView.findViewById(R.id.AddGroup);
+
 
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.MATCH_PARENT;
@@ -173,9 +187,22 @@ public class HomeScreenView extends AppCompatActivity {
         });
     }
 
+    public static Date now() {
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.GERMANY);
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.GERMANY).parse(sdf.format(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
     private void SelectedGroups() {
 
         LinearLayout scrollView = findViewById(R.id.homeScrollView);
+        scrollView.removeAllViews();
         selectedPflanzen = new ArrayList<>();
 
         for (int i = 0; i < selectedGoups.size(); i++) {
@@ -216,19 +243,35 @@ public class HomeScreenView extends AppCompatActivity {
                 }
             }
 
-            Integer bewaesserungcount = 0;
-            Integer bewaesserungpercent = 0;
+            double bewaesserungcount = 0;
+            float bewaesserungpercentfloat = 0;
+            String bewaesserungpercent = "N/A";
 
             if (selectedPflanzen.size() > 0) {
                 Calendar cal = Calendar.getInstance();
                 for (Pflanze p : selectedPflanzen) {
-                    if (p.Gegossen.equals(cal.getTime().toString())) {
+                    Date date = now();
+                    try {
+                        date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.GERMANY).parse(p.Gegossen);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    long wasserzyklus = 0;
+                    for (Pflanzenart pa:pflanzenarten
+                         ) {
+                        if(pa.Bezeichnung.equals(p.Pflanzeartname)){
+                            wasserzyklus = pa.Wasserzyklus.longValue();
+                        }
+                    }
+                    if (((now().getTime() - (date.getTime()))/86400000) < wasserzyklus) {
                         bewaesserungcount++;
                     }
                 }
-                bewaesserungpercent = bewaesserungcount / selectedPflanzen.size() * 100;
+                bewaesserungpercentfloat = (float)bewaesserungcount / (float)selectedPflanzen.size();
+                bewaesserungpercent = String.format("%.0f",bewaesserungcount / selectedPflanzen.size() * 100);
             }
 
+            slider.setValue(bewaesserungpercentfloat);
             bewaesserung.setText(bewaesserungpercent + "% Pflanzen sind bewässert");
 
             //TableLayout
@@ -292,6 +335,11 @@ public class HomeScreenView extends AppCompatActivity {
 
     private void Initialize() {
         try {
+            pflanzenarten = new ArrayList<>();
+            gruppen = new ArrayList<>();
+            userPflanzen = new ArrayList<>();
+
+
             APIGET apiget = new APIGET(name, session, "Initialize");
             Thread thread = new Thread(apiget);
             thread.start();
@@ -328,7 +376,7 @@ public class HomeScreenView extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
+            SelectedGroups();
         } catch (Exception e) {
             e.printStackTrace();
         }
