@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PLAN_TS"
         android:usesCleartextTraffic="true">
+        <activity android:name=".AddNewGroupView"></activity>
         <activity android:name=".PflanzeDetailView" />
         <activity android:name=".NewPflanzeView" />
         <activity android:name=".HomeScreenView" />
