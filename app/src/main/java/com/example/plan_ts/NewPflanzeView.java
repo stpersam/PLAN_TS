@@ -164,7 +164,7 @@ public class NewPflanzeView extends AppCompatActivity implements Spinner.OnItemS
     public static String now() {
         Calendar cal = Calendar.getInstance();
         Date date = cal.getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.GERMANY);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.GERMANY);
         return sdf.format(date);
     }
 
@@ -175,9 +175,16 @@ public class NewPflanzeView extends AppCompatActivity implements Spinner.OnItemS
         String groesse= newtopfgroesse.getText().toString();
         String pflanzenart= addPlant_spinner.getSelectedItem().toString();
         try {
+            String jsonLoginData = "\"user\":\"" + name + "\",\"sessionid\":" + session +"";
+            String jsonBody = "{\"Pflanzenname\":\"" + pflanzenname + "\",\"Bild\":\"" + bild +"\",\"Gegossen\":\"" + gegossen + "\",\"Groesse\":\"" + groesse + "\",\"Username\":\"" + name + "\",\"Pflanzeartname\":\"" + pflanzenart + "\",\"Gruppenname\":\"" + gruppenname +"\"}";
+            String json = "{\"pflanze\":" + jsonBody + ",\"usd\":{" + jsonLoginData +"}}";
+
+            //String jsonBody = "{\"user\":\"" + username + "\",\"password\":\"" + password + "\"}";
+/*
             String jsonLoginData = "{\"user\":\"" + name + "\",\"sessionid\":" + session +"}";
             String jsonBody = "{\"Pflanzenname\":\"" + pflanzenname + "\",\"Bild\":\"" + bild +"\",\"Gegossen\":\"" + gegossen + "\",\"Groesse\":\"" + groesse + "\",\"Username\":\"" + name + "\",\"Pflanzeartname\":\"" + pflanzenart + "\",\"Gruppenname\":\"" + gruppenname +"\"}";
-            String json = "{\"actionstring\": \"" + jsonBody + "\",\"usd\" :" + jsonLoginData +"}";
+            String json = "{\"actionstring\":\"" + jsonBody + "\",\"usd\":" + jsonLoginData +"}";
+  */
             System.out.println(json);
 
             URL url = new URL("https://192.168.179.1:45455/api/Plan_ts/AddPflanze");
@@ -190,7 +197,7 @@ public class NewPflanzeView extends AppCompatActivity implements Spinner.OnItemS
 
             OutputStream os = httpConnection.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-            writer.write(jsonBody);
+            writer.write(json);
             writer.flush();
             writer.close();
             os.close();
