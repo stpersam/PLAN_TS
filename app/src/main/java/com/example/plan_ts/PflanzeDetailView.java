@@ -63,7 +63,7 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
     private List<Pflanzenart> pflanzenartenListe = new ArrayList<>();
     List<Pflanzenart> tmp = new ArrayList();
 
-    public String APIURL = "https://192.168.179.1:45455/api/Plan_ts/";
+    public String APIURL = "https://10.0.0.152:45455/api/Plan_ts/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

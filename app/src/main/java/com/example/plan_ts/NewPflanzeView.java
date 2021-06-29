@@ -205,7 +205,7 @@ public class NewPflanzeView extends AppCompatActivity implements Spinner.OnItemS
             String json = "{\"pflanze\":" + jsonBody + ",\"usd\":{" + jsonLoginData +"}}";
             System.out.println(json);
 
-            URL url = new URL("https://192.168.179.1:45455/api/Plan_ts/AddPflanze");
+            URL url = new URL("https://10.0.0.152:45455/api/Plan_ts/AddPflanze");
             HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
             httpConnection.setRequestMethod("POST");
             httpConnection.setRequestProperty("Content-Type", "application/json;");
