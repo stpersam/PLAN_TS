@@ -163,12 +163,11 @@ public class AddNewGroupView extends AppCompatActivity {
     }
 
     public void SelectedPlants(){
-        ScrollView scrollView = findViewById(R.id.GroupScrollView);
+        LinearLayout scrollView = findViewById(R.id.layoutView);
 
         for (int i = 0; i < selectedPlants.size(); i++) {
-            System.out.println("asdaf" + selectedPlants.get(i));
             //LinearLayout
-            LinearLayout linearLayout = new LinearLayout(this);
+            LinearLayout linearLayout =new LinearLayout(this);
             linearLayout.setOrientation(LinearLayout.VERTICAL);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.gravity = Gravity.CENTER;
@@ -176,25 +175,27 @@ public class AddNewGroupView extends AppCompatActivity {
             linearLayout.setLayoutParams(layoutParams);
             linearLayout.setId(i);
 
-            System.out.println("test2");
-
             //TableLayout
             TableLayout mTableLayout = new TableLayout(this);
             mTableLayout.setLayoutParams(new TableLayout.LayoutParams(350, TableLayout.LayoutParams.WRAP_CONTENT));
             mTableLayout.setGravity(Gravity.CENTER_HORIZONTAL);
 
-            System.out.println("test3");
 
             for (int l = 0; l < selectedPlants.size(); ) {
                 TableRow a = new TableRow(this);
                 TableRow.LayoutParams param = new TableRow.LayoutParams(350, 350, 0);
                 a.setLayoutParams(param);
                 a.setGravity(Gravity.CENTER_HORIZONTAL);
-                System.out.println("test4");
 
                 for (int y = 0; (y < 2) && (l < selectedPlants.size()); y++) {
                     Button x = new Button(this);
-                    x.setText("TEMPtest");
+
+                    for(int s = 0; s < userPflanzen.size(); s++){
+                        if(selectedPlants.get(l) == userPflanzen.get(s).getPflanzenID()){
+                            x.setText(userPflanzen.get(s).getPflanzenname());
+                        }
+                    }
+
                     TableRow.LayoutParams par = new TableRow.LayoutParams(350, 350, 0);
                     x.setLayoutParams(par);
                     int ids = selectedPlants.get(l);
@@ -202,7 +203,6 @@ public class AddNewGroupView extends AppCompatActivity {
                     x.setId(ids);
                     a.addView(x);
                     l++;
-                    System.out.println("test5");
                 }
                 mTableLayout.addView(a);
             }

@@ -203,7 +203,7 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
         try {
             String jsonLoginData = "\"user\":\"" + name + "\",\"sessionid\":" + session +"";
             String jsonBody = "{\"Pflanzen_ID\":\"" + plant + "\",\"Pflanzenname\":\"" + pflanzenname + "\",\"Bild\":\"" + bild +"\",\"Gegossen\":\"" + gegossen + "\",\"Groesse\":\"" + groesse + "\",\"Username\":\"" + name + "\",\"Pflanzeartname\":\"" + pflA + "\",\"Gruppenname\":\"" + gruppenname +"\"}";
-            String json = "{\"pflanze\":" + jsonBody + ",\"usd\":{" + jsonLoginData +"}}";
+            String json = "{\"pflanze\":" + jsonBody + ",\"usd\":{" + jsonLoginData + "},\"Pflanzen_ID\":" + plant + "}";
             System.out.println(json);
 
             URL url = new URL("https://10.0.0.152:45455/api/Plan_ts/EditPflanze");
