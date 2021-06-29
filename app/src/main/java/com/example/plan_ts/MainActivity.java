@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         loginRepository.makeLoginRequest(jsonBody, new RepositoryCallback<Integer>() {
             @Override
             public void onComplete(Result<Integer> result) {
-                if (result instanceof Result.Success && result != null && ((Result.Success<Integer>) result).data != 0) {
+                if (result instanceof Result.Success && result != null && ((Result.Success<Integer>) result).data != -1) {
                     Intent i  = new Intent(MainActivity.this, HomeScreenView.class);
                     i.putExtra(HomeScreenView.SESSIONID,((Result.Success<Integer>) result).data.toString());
                     i.putExtra(HomeScreenView.USERNAME,username);
