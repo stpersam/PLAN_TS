@@ -95,6 +95,7 @@ public class PflanzeDetailView extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
         for(Pflanze pflanze : userPflanzen){
             if(pflanze.getPflanzenID() == Integer.parseInt(plant)) {
                 plantname.setText(pflanze.getPflanzenname());
