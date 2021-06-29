@@ -22,6 +22,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class HomeScreenView extends AppCompatActivity {
@@ -31,12 +32,14 @@ public class HomeScreenView extends AppCompatActivity {
     public String name;
     private Button gruppenbtn;
     private MaterialToolbar toolbar;
+    private TextView bewaesserung;
     String out;
 
     private List<Integer> selectedGoups = new ArrayList<>();
     private List<Gruppe> gruppen = new ArrayList<>();
     private List<Pflanzenart> pflanzenarten = new ArrayList<>();
     private List<Pflanze> userPflanzen = new ArrayList<>();
+    private List<Pflanze> selectedPflanzen = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,7 @@ public class HomeScreenView extends AppCompatActivity {
         name = getIntent().getStringExtra(USERNAME);
         gruppenbtn = findViewById(R.id.gruppen_btn);
         toolbar = findViewById(R.id.topAppBar);
+        bewaesserung = findViewById(R.id.bewaesserung);
 
 
         //Initialize Data for HomeScreen of User
@@ -108,6 +112,7 @@ public class HomeScreenView extends AppCompatActivity {
     public void onButtonShowPopupWindowClick(View view) {
 
         selectedGoups = new ArrayList<>();
+
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.home_group_popup, null);
@@ -169,6 +174,7 @@ public class HomeScreenView extends AppCompatActivity {
     private void SelectedGroups() {
 
         LinearLayout scrollView = findViewById(R.id.homeScrollView);
+        selectedPflanzen = new ArrayList<>();
 
         for(int i = 0; i < selectedGoups.size(); i++){
             //LinearLayout
@@ -176,7 +182,7 @@ public class HomeScreenView extends AppCompatActivity {
             linearLayout.setOrientation(LinearLayout.VERTICAL);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.gravity = Gravity.CENTER;
-            layoutParams.setMargins(75,20,50,20);
+            layoutParams.setMargins(50,20,50,20);
             linearLayout.setLayoutParams(layoutParams);
             linearLayout.setId(i);
 
@@ -203,27 +209,39 @@ public class HomeScreenView extends AppCompatActivity {
             List<Pflanze> tmpPfl = new ArrayList();
             for(int z = 0; z < userPflanzen.size(); z++){
                 if(userPflanzen.get(z).Gruppenname.equals(gruppenname)){
+                    selectedPflanzen.add(userPflanzen.get(z));
                     tmpPfl.add(userPflanzen.get(z));
                 }
             }
 
+                      Integer bewaesserungcount = 0;
+            Integer bewaesserungpercent = 0;
+
+            Calendar cal = Calendar.getInstance();
+            for (Pflanze p:selectedPflanzen) {
+                if(p.Gegossen.equals(cal.getTime().toString())){
+                    bewaesserungcount++;
+                }
+            }
+            bewaesserungpercent = bewaesserungcount / selectedPflanzen.size() *100;
+            bewaesserung.setText(bewaesserungpercent + "% Pflanzen sind bewässert");
+
             //TableLayout
             TableLayout mTableLayout = new TableLayout(this);
-            mTableLayout.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+            mTableLayout.setLayoutParams(new TableLayout.LayoutParams(350, TableLayout.LayoutParams.WRAP_CONTENT));
             mTableLayout.setGravity(Gravity.CENTER_HORIZONTAL);
 
             for(int l = 0; l <= tmpPfl.size();) {
                 TableRow a = new TableRow(this);
-                TableRow.LayoutParams param = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
+                TableRow.LayoutParams param = new TableRow.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 0.1f);
                 a.setLayoutParams(param);
-                a.setGravity(Gravity.CENTER_VERTICAL);
+                a.setGravity(Gravity.CENTER_HORIZONTAL);
 
                 for (int y = 0; (y < 2) && (l <= tmpPfl.size()); y++) {
                     if(l < (tmpPfl.size())) {
                         Button x = new Button(this);
                         x.setText(tmpPfl.get(l).Pflanzenname);
-                        x.setGravity(Gravity.CENTER);
-                        TableRow.LayoutParams par = new TableRow.LayoutParams(y);
+                        TableRow.LayoutParams par = new TableRow.LayoutParams(350, 350,0);
                         x.setLayoutParams(par);
                         int ids = tmpPfl.get(l).getPflanzenID();
                         String idsPl = tmpPfl.get(l).getPflanzenID().toString();
@@ -243,9 +261,8 @@ public class HomeScreenView extends AppCompatActivity {
                     else if(l == (tmpPfl.size())){
                         Button end = new Button(this);
                         end.setText("+");
-                        end.setTextSize(20);
                         end.setGravity(Gravity.CENTER);
-                        TableRow.LayoutParams endpar = new TableRow.LayoutParams(y);
+                        TableRow.LayoutParams endpar = new TableRow.LayoutParams(350, 350,0);
                         end.setLayoutParams(endpar);
                         end.setOnClickListener(new View.OnClickListener() {
                             @Override

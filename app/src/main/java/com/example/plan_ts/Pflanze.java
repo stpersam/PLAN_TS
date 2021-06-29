@@ -2,6 +2,10 @@ package com.example.plan_ts;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Pflanze{
 
     @SerializedName("PflanzenID")
@@ -20,6 +24,22 @@ public class Pflanze{
     public String Gruppenname;
     @SerializedName("Pflanzeartname")
     public String Pflanzeartname;
+
+
+
+    @SerializedName("GegossenDate")
+    public Date GegossenDate;
+
+    public Date getGegossenDate() {
+        return GegossenDate;
+    }
+    public void setGegossenDate(String gegossen) {
+        try {
+            GegossenDate = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss.ffffff").parse(gegossen);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     public Integer getPflanzenID() {
