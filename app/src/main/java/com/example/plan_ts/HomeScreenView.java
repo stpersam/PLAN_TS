@@ -74,6 +74,7 @@ public class HomeScreenView extends AppCompatActivity {
         View popupView = inflater.inflate(R.layout.menu_popup, null);
 
         ImageButton addplantbtn = popupView.findViewById(R.id.AddPlant);
+        ImageButton AddGroup = popupView.findViewById(R.id.AddGroup);
 
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.MATCH_PARENT;
@@ -83,6 +84,26 @@ public class HomeScreenView extends AppCompatActivity {
         // which view you pass in doesn't matter, it is only used for the window tolken
         popupWindow.showAtLocation(view, Gravity.LEFT, 0, 0);
 
+
+        addplantbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(HomeScreenView.this, NewPflanzeView.class);
+                i.putExtra(NewPflanzeView.SESSIONID, session);
+                i.putExtra(NewPflanzeView.USERNAME, name);
+                startActivity(i);
+            }
+        });
+
+        AddGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(HomeScreenView.this, AddNewGroupView.class);
+                i.putExtra(AddNewGroupView.SESSIONID, session);
+                i.putExtra(AddNewGroupView.USERNAME, name);
+                startActivity(i);
+            }
+        });
     }
     public void onButtonShowPopupWindowClick(View view) {
 
@@ -180,7 +201,6 @@ public class HomeScreenView extends AppCompatActivity {
             linearLayout.addView(textView);
 
             List<Pflanze> tmpPfl = new ArrayList();
-            System.out.println(userPflanzen.size());
             for(int z = 0; z < userPflanzen.size(); z++){
                 if(userPflanzen.get(z).Gruppenname.equals(gruppenname)){
                     tmpPfl.add(userPflanzen.get(z));
@@ -276,7 +296,6 @@ public class HomeScreenView extends AppCompatActivity {
                     Gson gsonG = new Gson();
                     Gruppe gsonObjG = gsonG.fromJson(g, Gruppe.class);
                     gruppen.add(gsonObjG);
-                    System.out.println(g);
                 }
                 //Pflanze
                 Gson gsonPF = new Gson();

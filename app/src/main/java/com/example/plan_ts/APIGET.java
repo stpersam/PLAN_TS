@@ -48,9 +48,8 @@ public class APIGET implements Runnable {
         } catch (Exception e) {}
 
         try {
-            URL url = new URL("https://192.168.179.1:45455/api/Plan_ts/" + urlEnding);
+            URL url = new URL("https://10.0.0.152:45455/api/Plan_ts/" + urlEnding);
             String jsonBody = "{\"user\":\"" + name + "\",\"sessionid\":\"" + session + "\"}";
-            System.out.println(jsonBody);
             HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
             httpConnection.setRequestMethod("POST");
             httpConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");

@@ -9,9 +9,17 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="400dp"
         android:background="@color/lightbluehome"
         android:orientation="vertical">
+
+        <Button
+            android:id="@+id/Group_back"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:backgroundTint="@color/lightbluehome"
+            android:drawableTop="@drawable/back_foreground"></Button>
+
         <TextView
             android:layout_margin="20dp"
             android:layout_width="match_parent"

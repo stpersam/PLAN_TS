@@ -20,8 +20,12 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class NewPflanzeView extends AppCompatActivity implements Spinner.OnItemSelectedListener{
@@ -75,7 +79,7 @@ public class NewPflanzeView extends AppCompatActivity implements Spinner.OnItemS
         newPlant_ADD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //postNewPlant();
+                postNewPlant();
             }
         });
 
@@ -155,21 +159,27 @@ public class NewPflanzeView extends AppCompatActivity implements Spinner.OnItemS
         String[] pflanzenarten = new String[tmp.size()];
        for(int i = 0; i < tmp.size(); i++){
            pflanzenarten[i] = tmp.get(i).getBezeichnung();
-           System.out.println(pflanzenarten[i]);
        }
         return pflanzenarten;
     }
 
+    public static String now() {
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.GERMANY);
+        return sdf.format(date);
+    }
+
     public void postNewPlant(){
         String pflanzenname = plantName.getText().toString();
-        String bild= "bild.jpg";
-        String gegossen= newgiessen.getText().toString();
+        String bild= "plant1";
+        String gegossen = now();
         String groesse= newtopfgroesse.getText().toString();
         String pflanzenart= addPlant_spinner.getSelectedItem().toString();
         try {
-            String jsonBody = "{\"pflanzenname\":\"" + pflanzenname + "\",\"bild\":\"" + bild +"\",\"gegossen\":\"" + gegossen + "\",\"groesse\":\"" + groesse + "\",\"username\":\"" + name + "\",\"pflanzenart\":\"" + pflanzenart +"\"}";
+            String jsonBody = "{\"Pflanzenname\":\"" + pflanzenname + "\",\"Bild\":\"" + bild +"\",\"Gegossen\":\"" + gegossen + "\",\"Groesse\":\"" + groesse + "\",\"Username\":\"" + name + "\",\"Pflanzeartname\":\"" + pflanzenart + "\",\"Gruppenname\":\"" + gruppenname +"\"}";
             System.out.println(jsonBody);
-            URL url = new URL("https://192.168.179.1:45455/api//Plan_ts/AddPflanze");
+            URL url = new URL("https://10.0.0.152:45455/api//Plan_ts/AddPflanze");
             HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
             httpConnection.setRequestMethod("POST");
             httpConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
@@ -183,15 +193,6 @@ public class NewPflanzeView extends AppCompatActivity implements Spinner.OnItemS
             writer.flush();
             writer.close();
             os.close();
-
-            InputStream in = httpConnection.getInputStream();
-            Scanner scanner = new Scanner(in);
-            scanner.useDelimiter("\\A");
-            String out = "";
-
-            if(scanner.hasNext()){
-                out = scanner.next();
-            }
 
         } catch (Exception e) {
             e.printStackTrace();
