@@ -142,6 +142,7 @@ public class NewPflanzeView extends AppCompatActivity implements Spinner.OnItemS
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        ((TextView) parent.getChildAt(0)).setTextColor(0xffffffff);
         String pflanzenart = addPlant_spinner.getSelectedItem().toString();
         Pflanzenart pfl = null;
         String result2;
