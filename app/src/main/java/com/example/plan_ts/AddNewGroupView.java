@@ -21,9 +21,21 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Scanner;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public class AddNewGroupView extends AppCompatActivity {
 
@@ -35,6 +47,7 @@ public class AddNewGroupView extends AppCompatActivity {
     private EditText beschreibungET;
     private Button selectPlants;
     private Button Group_back;
+    private Button saveGroup;
 
     private List<Gruppe> gruppen = new ArrayList<>();
     private List<Pflanze> userPflanzen = new ArrayList<>();
@@ -56,6 +69,7 @@ public class AddNewGroupView extends AppCompatActivity {
         nameET = findViewById(R.id.nameET);
         beschreibungET = findViewById(R.id.beschreibungET);
         Group_back = findViewById(R.id.Group_back);
+        saveGroup = findViewById(R.id.saveGroup);
 
         GetUserplants();
 
@@ -65,13 +79,76 @@ public class AddNewGroupView extends AppCompatActivity {
                 finish();
             }
         });
-
         selectPlants.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonShowPopupWindowClick(v);
+               //onButtonShowPopupWindowClick(v);
             }
         });
+        saveGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveNewGroup();
+                finish();
+            }
+        });
+    }
+
+    private void saveNewGroup() {
+        TrustManager[] trustAllCerts = new TrustManager[]{
+                new X509TrustManager() {
+                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
+                    public void checkClientTrusted(
+                            java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+                    public void checkServerTrusted(
+                            java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+                }
+        };
+        // Install the all-trusting trust manager
+        try {
+            SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+        } catch (Exception e) {}
+
+        try {
+            String gruppenname = nameET.getText().toString();
+            String beschreibung = beschreibungET.getText().toString();
+            String jsonLoginData = "\"user\":\"" + name + "\",\"sessionid\":" + session +"";
+            String jsonBody = "{\"Gruppenname\":\"" + gruppenname + "\",\"Beschreibung\":\"" + beschreibung + "\",\"Username\":\"" + name +"\"}";
+            String json = "{\"gruppe\":" + jsonBody + ",\"usd\":{" + jsonLoginData + "}}";
+            System.out.println(json);
+
+            URL url = new URL("https://10.0.0.152:45455/api/Plan_ts/AddGruppe");
+            HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+            httpConnection.setRequestMethod("POST");
+            httpConnection.setRequestProperty("Content-Type", "application/json;");
+            httpConnection.setRequestProperty("Accept", "text/plain");
+            httpConnection.setDoOutput(true);
+            httpConnection.setDoInput(true);
+
+            OutputStream os = httpConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+            writer.write(json);
+            writer.flush();
+            writer.close();
+            os.close();
+
+            InputStream in = httpConnection.getInputStream();
+            Scanner scanner = new Scanner(in);
+            scanner.useDelimiter("\\A");
+            String out = "";
+
+            if(scanner.hasNext()){
+                out = scanner.next();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void GetUserplants(){
@@ -164,8 +241,6 @@ public class AddNewGroupView extends AppCompatActivity {
 
     public void SelectedPlants(){
         LinearLayout scrollView = findViewById(R.id.layoutView);
-
-        for (int i = 0; i < selectedPlants.size(); i++) {
             //LinearLayout
             LinearLayout linearLayout =new LinearLayout(this);
             linearLayout.setOrientation(LinearLayout.VERTICAL);
@@ -173,7 +248,6 @@ public class AddNewGroupView extends AppCompatActivity {
             layoutParams.gravity = Gravity.CENTER;
             layoutParams.setMargins(50, 20, 50, 20);
             linearLayout.setLayoutParams(layoutParams);
-            linearLayout.setId(i);
 
             //TableLayout
             TableLayout mTableLayout = new TableLayout(this);
@@ -189,18 +263,16 @@ public class AddNewGroupView extends AppCompatActivity {
 
                 for (int y = 0; (y < 2) && (l < selectedPlants.size()); y++) {
                     Button x = new Button(this);
-
                     for(int s = 0; s < userPflanzen.size(); s++){
                         if(selectedPlants.get(l) == userPflanzen.get(s).getPflanzenID()){
                             x.setText(userPflanzen.get(s).getPflanzenname());
+                            TableRow.LayoutParams par = new TableRow.LayoutParams(350, 350, 0);
+                            x.setLayoutParams(par);
+                            int ids = userPflanzen.get(s).getPflanzenID();
+                            String idsPl = userPflanzen.get(s).getPflanzenID().toString();
+                            x.setId(ids);
                         }
                     }
-
-                    TableRow.LayoutParams par = new TableRow.LayoutParams(350, 350, 0);
-                    x.setLayoutParams(par);
-                    int ids = selectedPlants.get(l);
-                    String idsPl = selectedPlants.get(l).toString();
-                    x.setId(ids);
                     a.addView(x);
                     l++;
                 }
@@ -208,6 +280,6 @@ public class AddNewGroupView extends AppCompatActivity {
             }
             linearLayout.addView(mTableLayout);
             scrollView.addView(linearLayout);
-        }
+
     }
 }

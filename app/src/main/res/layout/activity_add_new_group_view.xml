@@ -12,13 +12,26 @@
         android:layout_height="400dp"
         android:background="@color/lightbluehome"
         android:orientation="vertical">
-
-        <Button
-            android:id="@+id/Group_back"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:backgroundTint="@color/lightbluehome"
-            android:drawableTop="@drawable/back_foreground"></Button>
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/Group_back"
+                android:layout_width="wrap_content"
+                android:layout_height="70dp"
+                android:backgroundTint="@color/lightbluehome"
+                android:drawableTop="@drawable/back_foreground">
+            </Button>
+            <Button
+                android:id="@+id/saveGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="200dp"
+                android:backgroundTint="@color/lightbluehome"
+                android:drawableTop="@drawable/ic_saveplant_foreground">
+            </Button>
+        </LinearLayout>
 
         <TextView
             android:layout_margin="20dp"
