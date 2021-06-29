@@ -1,28 +1,13 @@
 package com.example.plan_ts;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.os.StrictMode;
-import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.Scanner;
 import java.util.concurrent.Executor;
 
@@ -86,7 +71,7 @@ public class LoginRepository {
         } catch (Exception e) {}
 
         try {
-            URL url = new URL("https://10.0.0.152:45455/api/Plan_ts/Login");
+            URL url = new URL("https://192.168.179.1:45455/api/Plan_ts/Login");
             HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
             httpConnection.setRequestMethod("POST");
             httpConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");

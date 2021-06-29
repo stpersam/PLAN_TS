@@ -1,13 +1,15 @@
 package com.example.plan_ts;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 
@@ -21,6 +23,7 @@ public class PflanzeDetailView extends AppCompatActivity {
     public String session;
     public String name;
     public String plant;
+    private ImageView Plant_Image;
     private Button Plant_back;
     private TextView plantname;
     private Spinner pflanzenart;
@@ -34,6 +37,7 @@ public class PflanzeDetailView extends AppCompatActivity {
     private List<Pflanze> userPflanzen = new ArrayList<>();
     private List<Pflanzenart> pflanzenartenListe = new ArrayList<>();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +49,7 @@ public class PflanzeDetailView extends AppCompatActivity {
         name = getIntent().getStringExtra(USERNAME);
         plant = getIntent().getStringExtra(PLANT_KEY);
 
+        Plant_Image = findViewById(R.id.Plant_Image);
         Plant_back = findViewById(R.id.Plant_back);
         plantname = findViewById(R.id.plantName);
         pflanzenart = findViewById(R.id.addPlant_spinner);
@@ -95,6 +100,11 @@ public class PflanzeDetailView extends AppCompatActivity {
                 plantname.setText(pflanze.getPflanzenname());
                 for(Pflanzenart pflanzenart : pflanzenartenListe){
                     if(pflanze.getPflanzeartname().equals(pflanzenart.getBezeichnung())){
+                        String x = (pflanze.Bild);
+                        Context context = Plant_Image.getContext();
+                        int id = context.getResources().getIdentifier(x, "drawable", context.getPackageName());
+                        Plant_Image.setImageResource(id);
+
                         luftfeuchtigkeit.setText(pflanzenart.getLuftfeuchtigkeit().toString());
                         giessen.setText(pflanzenart.getWasserzyklus().toString());
                         topfgroesse.setText(pflanzenart.getTopfgroesse().toString());;

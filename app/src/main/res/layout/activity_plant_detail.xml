@@ -36,6 +36,20 @@
         android:layout_height="290dp"
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/Plant_Image"
+            android:layout_width="222dp"
+            android:layout_height="141dp"
+            android:layout_marginStart="5dp"
+
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/test"></ImageView>
+
         <TextView
             android:layout_marginTop="170dp"
             android:layout_marginLeft="20dp"
