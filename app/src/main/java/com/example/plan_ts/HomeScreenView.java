@@ -258,6 +258,7 @@ public class HomeScreenView extends AppCompatActivity {
                                 i.putExtra(PflanzeDetailView.SESSIONID, session);
                                 i.putExtra(PflanzeDetailView.USERNAME, name);
                                 i.putExtra(PflanzeDetailView.PLANT_KEY, idsPl);
+                                i.putExtra(PflanzeDetailView.GRUPPENNAME, nameDerGruppe);
                                 startActivity(i);
                             }
                         });

@@ -16,13 +16,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 
+import java.io.BufferedWriter;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnItemSelectedListener{
     public static final String PLANT_KEY = "Plant";
     public static final String SESSIONID = "Plant_Session";
     public static final String USERNAME = "Plant_Name";
+    public static final String  GRUPPENNAME = "PlantGruppenname";
     public String session;
     public String name;
     public String plant;
@@ -38,12 +48,11 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
     private String result;
     private String result2;
     private Button Plant_UPD;
-
+    public String gruppenname;
 
     private List<Pflanze> userPflanzen = new ArrayList<>();
     private List<Pflanzenart> pflanzenartenListe = new ArrayList<>();
     List<Pflanzenart> tmp = new ArrayList();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +64,7 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
         session = getIntent().getStringExtra(SESSIONID);
         name = getIntent().getStringExtra(USERNAME);
         plant = getIntent().getStringExtra(PLANT_KEY);
+        gruppenname = getIntent().getStringExtra(GRUPPENNAME);
 
         Plant_Image = findViewById(R.id.Plant_Image);
         Plant_back = findViewById(R.id.Plant_back);
@@ -110,7 +120,6 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
             e.printStackTrace();
         }
 
-
         for(Pflanze pflanze : userPflanzen){
             if(pflanze.getPflanzenID() == Integer.parseInt(plant)) {
                 plantname.setText(pflanze.getPflanzenname());
@@ -142,6 +151,52 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
             }
         });
 
+        Plant_UPD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendPost();
+            }
+        });
+
+    }
+
+    public static String now() {
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.GERMANY);
+        return sdf.format(date);
+    }
+
+    private void sendPost() {
+        String pflanzenname = plantname.getText().toString();
+        String bild= "plant1";
+        String gegossen = now();
+        String groesse= topfgroesse.getText().toString();
+        String pflA= pflanzenart.getSelectedItem().toString();
+        try {
+            String jsonLoginData = "{\"user\":\"" + name + "\",\"sessionid\":" + session +"}";
+            String jsonBody = "{\"Pflanzenname\":\"" + pflanzenname + "\",\"Bild\":\"" + bild +"\",\"Gegossen\":\"" + gegossen + "\",\"Groesse\":\"" + groesse + "\",\"Username\":\"" + name + "\",\"Pflanzeartname\":\"" + pflA + "\",\"Gruppenname\":\"" + gruppenname +"\"}";
+            String json = "{\"actionstring\": \"" + jsonBody + "\",\"usd\" :" + jsonLoginData +"}";
+            System.out.println(json);
+
+            URL url = new URL("https://10.0.0.152:45455/api/Plan_ts/EditPflanze");
+            HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+            httpConnection.setRequestMethod("POST");
+            httpConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+            httpConnection.setRequestProperty("Accept", "text/plain");
+            httpConnection.setDoOutput(true);
+            httpConnection.setDoInput(true);
+
+            OutputStream os = httpConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+            writer.write(json);
+            writer.flush();
+            writer.close();
+            os.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public String[] getPflanzenarten(){
