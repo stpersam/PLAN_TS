@@ -2,10 +2,6 @@ package com.example.plan_ts;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class Pflanze{
 
     @SerializedName("PflanzenID")
@@ -26,7 +22,7 @@ public class Pflanze{
     public String Pflanzeartname;
 
 
-
+/*
     @SerializedName("GegossenDate")
     public Date GegossenDate;
 
@@ -40,7 +36,7 @@ public class Pflanze{
             e.printStackTrace();
         }
     }
-
+*/
 
     public Integer getPflanzenID() {
         return PflanzenID;

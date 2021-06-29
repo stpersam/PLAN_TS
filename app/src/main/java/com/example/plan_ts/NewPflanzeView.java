@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 
 import java.io.BufferedWriter;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -26,7 +25,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Scanner;
 
 public class NewPflanzeView extends AppCompatActivity implements Spinner.OnItemSelectedListener{
     private Button newPlant_back;
@@ -182,7 +180,7 @@ public class NewPflanzeView extends AppCompatActivity implements Spinner.OnItemS
             String json = "{\"actionstring\": \"" + jsonBody + "\",\"usd\" :" + jsonLoginData +"}";
             System.out.println(json);
 
-            URL url = new URL("https://10.0.0.152:45455/api/Plan_ts/AddPflanze");
+            URL url = new URL("https://192.168.179.1:45455/api/Plan_ts/AddPflanze");
             HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
             httpConnection.setRequestMethod("POST");
             httpConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");

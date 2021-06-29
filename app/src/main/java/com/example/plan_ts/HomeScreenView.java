@@ -62,7 +62,7 @@ public class HomeScreenView extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    onButtonShowMenuClick(v);
+                onButtonShowMenuClick(v);
             }
         });
 
@@ -73,6 +73,7 @@ public class HomeScreenView extends AppCompatActivity {
             }
         });
     }
+
     public void onButtonShowMenuClick(View view) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.menu_popup, null);
@@ -109,6 +110,7 @@ public class HomeScreenView extends AppCompatActivity {
             }
         });
     }
+
     public void onButtonShowPopupWindowClick(View view) {
 
         selectedGoups = new ArrayList<>();
@@ -125,7 +127,7 @@ public class HomeScreenView extends AppCompatActivity {
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
         TableLayout tab_lay = (TableLayout) popupView.findViewById(R.id.tab_lay);
-        for(int i = 0; i < gruppen.size();){
+        for (int i = 0; i < gruppen.size(); ) {
             TableRow a = new TableRow(this);
             TableRow.LayoutParams param = new TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT,
@@ -134,22 +136,22 @@ public class HomeScreenView extends AppCompatActivity {
             a.setLayoutParams(param);
             a.setGravity(Gravity.CENTER_VERTICAL);
 
-            for(int y = 0; (y < 2) && (i < gruppen.size()); y++) {
+            for (int y = 0; (y < 2) && (i < gruppen.size()); y++) {
                 Button x = new Button(this);
                 x.setText(gruppen.get(i).Gruppenname);
                 x.setGravity(Gravity.CENTER);
-                TableRow.LayoutParams par = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,300,y);
+                TableRow.LayoutParams par = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 300, y);
                 x.setLayoutParams(par);
 
 
                 int ids = gruppen.get(i).GruppenID;
                 x.setId(ids);
                 x.setOnClickListener(new View.OnClickListener() {
-                     public void onClick(View view) {
-                         x.setBackgroundColor(Color.rgb(165,216,254));
-                         selectedGoups.add(ids);
-                     }
-                 });
+                    public void onClick(View view) {
+                        x.setBackgroundColor(Color.rgb(165, 216, 254));
+                        selectedGoups.add(ids);
+                    }
+                });
                 a.addView(x);
                 i++;
             }
@@ -176,13 +178,13 @@ public class HomeScreenView extends AppCompatActivity {
         LinearLayout scrollView = findViewById(R.id.homeScrollView);
         selectedPflanzen = new ArrayList<>();
 
-        for(int i = 0; i < selectedGoups.size(); i++){
+        for (int i = 0; i < selectedGoups.size(); i++) {
             //LinearLayout
             LinearLayout linearLayout = new LinearLayout(this);
             linearLayout.setOrientation(LinearLayout.VERTICAL);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.gravity = Gravity.CENTER;
-            layoutParams.setMargins(50,20,50,20);
+            layoutParams.setMargins(50, 20, 50, 20);
             linearLayout.setLayoutParams(layoutParams);
             linearLayout.setId(i);
 
@@ -193,13 +195,13 @@ public class HomeScreenView extends AppCompatActivity {
             params1.gravity = Gravity.CENTER;
             textView.setLayoutParams(params1);
             textView.setTextSize(18);
-            String gruppenname="";
-            for(Gruppe g : gruppen){
-                if(g.getGruppenID() == selectedGoups.get(i)){
+            String gruppenname = "";
+            for (Gruppe g : gruppen) {
+                if (g.getGruppenID() == selectedGoups.get(i)) {
                     gruppenname = g.getGruppenname();
                     break;
-                }else{
-                    gruppenname ="No Group found";
+                } else {
+                    gruppenname = "No Group found";
                 }
             }
             final String nameDerGruppe = gruppenname;
@@ -207,23 +209,26 @@ public class HomeScreenView extends AppCompatActivity {
             linearLayout.addView(textView);
 
             List<Pflanze> tmpPfl = new ArrayList();
-            for(int z = 0; z < userPflanzen.size(); z++){
-                if(userPflanzen.get(z).Gruppenname.equals(gruppenname)){
+            for (int z = 0; z < userPflanzen.size(); z++) {
+                if (userPflanzen.get(z).Gruppenname.equals(gruppenname)) {
                     selectedPflanzen.add(userPflanzen.get(z));
                     tmpPfl.add(userPflanzen.get(z));
                 }
             }
 
-                      Integer bewaesserungcount = 0;
+            Integer bewaesserungcount = 0;
             Integer bewaesserungpercent = 0;
 
-            Calendar cal = Calendar.getInstance();
-            for (Pflanze p:selectedPflanzen) {
-                if(p.Gegossen.equals(cal.getTime().toString())){
-                    bewaesserungcount++;
+            if (selectedPflanzen.size() > 0) {
+                Calendar cal = Calendar.getInstance();
+                for (Pflanze p : selectedPflanzen) {
+                    if (p.Gegossen.equals(cal.getTime().toString())) {
+                        bewaesserungcount++;
+                    }
                 }
+                bewaesserungpercent = bewaesserungcount / selectedPflanzen.size() * 100;
             }
-            bewaesserungpercent = bewaesserungcount / selectedPflanzen.size() *100;
+
             bewaesserung.setText(bewaesserungpercent + "% Pflanzen sind bewässert");
 
             //TableLayout
@@ -231,17 +236,17 @@ public class HomeScreenView extends AppCompatActivity {
             mTableLayout.setLayoutParams(new TableLayout.LayoutParams(350, TableLayout.LayoutParams.WRAP_CONTENT));
             mTableLayout.setGravity(Gravity.CENTER_HORIZONTAL);
 
-            for(int l = 0; l <= tmpPfl.size();) {
+            for (int l = 0; l <= tmpPfl.size(); ) {
                 TableRow a = new TableRow(this);
                 TableRow.LayoutParams param = new TableRow.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 0.1f);
                 a.setLayoutParams(param);
                 a.setGravity(Gravity.CENTER_HORIZONTAL);
 
                 for (int y = 0; (y < 2) && (l <= tmpPfl.size()); y++) {
-                    if(l < (tmpPfl.size())) {
+                    if (l < (tmpPfl.size())) {
                         Button x = new Button(this);
                         x.setText(tmpPfl.get(l).Pflanzenname);
-                        TableRow.LayoutParams par = new TableRow.LayoutParams(350, 350,0);
+                        TableRow.LayoutParams par = new TableRow.LayoutParams(350, 350, 0);
                         x.setLayoutParams(par);
                         int ids = tmpPfl.get(l).getPflanzenID();
                         String idsPl = tmpPfl.get(l).getPflanzenID().toString();
@@ -257,20 +262,19 @@ public class HomeScreenView extends AppCompatActivity {
                             }
                         });
                         a.addView(x);
-                    }
-                    else if(l == (tmpPfl.size())){
+                    } else if (l == (tmpPfl.size())) {
                         Button end = new Button(this);
                         end.setText("+");
                         end.setGravity(Gravity.CENTER);
-                        TableRow.LayoutParams endpar = new TableRow.LayoutParams(350, 350,0);
+                        TableRow.LayoutParams endpar = new TableRow.LayoutParams(350, 350, 0);
                         end.setLayoutParams(endpar);
                         end.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent i  = new Intent(HomeScreenView.this, NewPflanzeView.class);
-                                i.putExtra(NewPflanzeView.SESSIONID,session);
-                                i.putExtra(NewPflanzeView.USERNAME,name);
-                                i.putExtra(NewPflanzeView.GRUPPENNAME,nameDerGruppe);
+                                Intent i = new Intent(HomeScreenView.this, NewPflanzeView.class);
+                                i.putExtra(NewPflanzeView.SESSIONID, session);
+                                i.putExtra(NewPflanzeView.USERNAME, name);
+                                i.putExtra(NewPflanzeView.GRUPPENNAME, nameDerGruppe);
                                 startActivity(i);
                             }
                         });
@@ -304,7 +308,7 @@ public class HomeScreenView extends AppCompatActivity {
             try {
                 //Pflanzenarten
                 Gson gsonPA = new Gson();
-                for (String x : pflanzenA){
+                for (String x : pflanzenA) {
                     Pflanzenart gsonObjPA = gsonPA.fromJson(x, Pflanzenart.class);
                     pflanzenarten.add(gsonObjPA);
                 }
@@ -316,15 +320,15 @@ public class HomeScreenView extends AppCompatActivity {
                 }
                 //Pflanze
                 Gson gsonPF = new Gson();
-                for (String a : pfl){
+                for (String a : pfl) {
                     Pflanze gsonObjPF = gsonPF.fromJson(a, Pflanze.class);
                     userPflanzen.add(gsonObjPF);
                 }
-            }catch(Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
