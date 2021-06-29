@@ -166,6 +166,7 @@ public class AddNewGroupView extends AppCompatActivity {
         ScrollView scrollView = findViewById(R.id.GroupScrollView);
 
         for (int i = 0; i < selectedPlants.size(); i++) {
+            System.out.println("asdaf" + selectedPlants.get(i));
             //LinearLayout
             LinearLayout linearLayout = new LinearLayout(this);
             linearLayout.setOrientation(LinearLayout.VERTICAL);
@@ -182,7 +183,7 @@ public class AddNewGroupView extends AppCompatActivity {
 
             for (int l = 0; l <= selectedPlants.size(); ) {
                 TableRow a = new TableRow(this);
-                TableRow.LayoutParams param = new TableRow.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 0.1f);
+                TableRow.LayoutParams param = new TableRow.LayoutParams(350, 350, 0);
                 a.setLayoutParams(param);
                 a.setGravity(Gravity.CENTER_HORIZONTAL);
 

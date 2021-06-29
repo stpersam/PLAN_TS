@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 
 import java.io.BufferedWriter;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -27,6 +28,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Scanner;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnItemSelectedListener{
     public static final String PLANT_KEY = "Plant";
@@ -168,21 +175,40 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
     }
 
     private void sendPost() {
+        TrustManager[] trustAllCerts = new TrustManager[]{
+                new X509TrustManager() {
+                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
+                    public void checkClientTrusted(
+                            java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+                    public void checkServerTrusted(
+                            java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+                }
+        };
+        // Install the all-trusting trust manager
+        try {
+            SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+        } catch (Exception e) {}
         String pflanzenname = plantname.getText().toString();
         String bild= "plant1";
         String gegossen = now();
         String groesse= topfgroesse.getText().toString();
         String pflA= pflanzenart.getSelectedItem().toString();
         try {
-            String jsonLoginData = "{\"user\":\"" + name + "\",\"sessionid\":" + session +"}";
-            String jsonBody = "{\"Pflanzenname\":\"" + pflanzenname + "\",\"Bild\":\"" + bild +"\",\"Gegossen\":\"" + gegossen + "\",\"Groesse\":\"" + groesse + "\",\"Username\":\"" + name + "\",\"Pflanzeartname\":\"" + pflA + "\",\"Gruppenname\":\"" + gruppenname +"\"}";
-            String json = "{\"actionstring\": \"" + jsonBody + "\",\"usd\" :" + jsonLoginData +"}";
+            String jsonLoginData = "\"user\":\"" + name + "\",\"sessionid\":" + session +"";
+            String jsonBody = "{\"Pflanzenname\":\"" + pflanzenname + "\",\"Bild\":\"" + bild +"\",\"Gegossen\":\"" + gegossen + "\",\"Groesse\":\"" + groesse + "\",\"Username\":\"" + name + "\",\"Pflanzeartname\":\"" + pflanzenart + "\",\"Gruppenname\":\"" + gruppenname +"\"}";
+            String json = "{\"pflanze\":" + jsonBody + ",\"usd\":{" + jsonLoginData +"}}";
             System.out.println(json);
 
             URL url = new URL("https://10.0.0.152:45455/api/Plan_ts/EditPflanze");
             HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
             httpConnection.setRequestMethod("POST");
-            httpConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+            httpConnection.setRequestProperty("Content-Type", "application/json;");
             httpConnection.setRequestProperty("Accept", "text/plain");
             httpConnection.setDoOutput(true);
             httpConnection.setDoInput(true);

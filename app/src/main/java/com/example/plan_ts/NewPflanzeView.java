@@ -135,9 +135,7 @@ public class NewPflanzeView extends AppCompatActivity implements Spinner.OnItemS
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
+    public void onNothingSelected(AdapterView<?> parent) { }
 
     public String[] getPflanzenarten(){
         List<Pflanzenart> tmp = new ArrayList();
