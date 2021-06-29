@@ -170,7 +170,7 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
     public static String now() {
         Calendar cal = Calendar.getInstance();
         Date date = cal.getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.GERMANY);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.GERMANY);
         return sdf.format(date);
     }
 
@@ -194,6 +194,7 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
             sc.init(null, trustAllCerts, new java.security.SecureRandom());
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
         } catch (Exception e) {}
+
         String pflanzenname = plantname.getText().toString();
         String bild= "plant1";
         String gegossen = now();
@@ -201,7 +202,7 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
         String pflA= pflanzenart.getSelectedItem().toString();
         try {
             String jsonLoginData = "\"user\":\"" + name + "\",\"sessionid\":" + session +"";
-            String jsonBody = "{\"Pflanzenname\":\"" + pflanzenname + "\",\"Bild\":\"" + bild +"\",\"Gegossen\":\"" + gegossen + "\",\"Groesse\":\"" + groesse + "\",\"Username\":\"" + name + "\",\"Pflanzeartname\":\"" + pflanzenart + "\",\"Gruppenname\":\"" + gruppenname +"\"}";
+            String jsonBody = "{\"Pflanzen_ID\":\"" + plant + "\",\"Pflanzenname\":\"" + pflanzenname + "\",\"Bild\":\"" + bild +"\",\"Gegossen\":\"" + gegossen + "\",\"Groesse\":\"" + groesse + "\",\"Username\":\"" + name + "\",\"Pflanzeartname\":\"" + pflA + "\",\"Gruppenname\":\"" + gruppenname +"\"}";
             String json = "{\"pflanze\":" + jsonBody + ",\"usd\":{" + jsonLoginData +"}}";
             System.out.println(json);
 
@@ -219,6 +220,15 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
             writer.flush();
             writer.close();
             os.close();
+
+            InputStream in = httpConnection.getInputStream();
+            Scanner scanner = new Scanner(in);
+            scanner.useDelimiter("\\A");
+            String out = "";
+
+            if(scanner.hasNext()){
+                out = scanner.next();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
