@@ -73,7 +73,16 @@ public class HomeScreenView extends AppCompatActivity {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.menu_popup, null);
 
-        ImageButton addplantbtn= popupView.findViewById(R.id.AddPlant);
+        ImageButton addplantbtn = popupView.findViewById(R.id.AddPlant);
+
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.MATCH_PARENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+        // show the popup window
+        // which view you pass in doesn't matter, it is only used for the window tolken
+        popupWindow.showAtLocation(view, Gravity.LEFT, 0, 0);
+
     }
     public void onButtonShowPopupWindowClick(View view) {
 
