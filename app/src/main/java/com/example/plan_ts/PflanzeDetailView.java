@@ -2,7 +2,6 @@ package com.example.plan_ts;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -66,7 +65,7 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
     List<Pflanzenart> tmp = new ArrayList();
     List<Gruppe> tmpgruppe = new ArrayList();
 
-    public String APIURL = "https://10.0.0.152:45455/api/Plan_ts/";
+    public String APIURL = "https://192.168.179.1:45455/api/Plan_ts/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -350,9 +349,9 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
             }
         }
         if(pfl != null) {
-            luftfeuchtigkeit.setText(pfl.getLuftfeuchtigkeit().toString());
-            giessen.setText(pfl.getWasserzyklus().toString());
-            topfgroesse.setText(pfl.getTopfgroesse().toString());
+            luftfeuchtigkeit.setText(pfl.getLuftfeuchtigkeit().toString()+ "%");
+            giessen.setText(pfl.getWasserzyklus().toString() + " Tage");
+            topfgroesse.setText(pfl.getTopfgroesse().toString() + "cm");
             erde.setText(pfl.getErde());
             licht.setText(pfl.getLichtbeduerfnisse());
         }

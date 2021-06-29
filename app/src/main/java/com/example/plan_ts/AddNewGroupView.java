@@ -1,25 +1,12 @@
 package com.example.plan_ts;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.ScrollView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 
-import com.google.gson.Gson;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedWriter;
 import java.io.InputStream;
@@ -27,9 +14,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 import java.util.Scanner;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -111,7 +95,7 @@ public class AddNewGroupView extends AppCompatActivity {
             String json = "{\"gruppe\":" + jsonBody + ",\"usd\":{" + jsonLoginData + "}}";
             System.out.println(json);
 
-            URL url = new URL("https://10.0.0.152:45455/api/Plan_ts/AddGruppe");
+            URL url = new URL("https://192.168.179.1:45455/api/Plan_ts/AddGruppe");
             HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
             httpConnection.setRequestMethod("POST");
             httpConnection.setRequestProperty("Content-Type", "application/json;");

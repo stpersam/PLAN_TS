@@ -36,6 +36,7 @@ public class HomeScreenView extends AppCompatActivity {
     public String session;
     public String name;
     private Button gruppenbtn;
+
     private MaterialToolbar toolbar;
     private TextView bewaesserung;
     public Slider slider;
@@ -93,6 +94,7 @@ public class HomeScreenView extends AppCompatActivity {
 
         ImageButton addplantbtn = popupView.findViewById(R.id.AddPlant);
         ImageButton AddGroup = popupView.findViewById(R.id.AddGroup);
+        Button logoutbtn = popupView.findViewById(R.id.logoutbtn);
 
 
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -103,6 +105,13 @@ public class HomeScreenView extends AppCompatActivity {
         // which view you pass in doesn't matter, it is only used for the window tolken
         popupWindow.showAtLocation(view, Gravity.LEFT, 0, 0);
 
+
+        logoutbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         addplantbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -308,7 +317,7 @@ public class HomeScreenView extends AppCompatActivity {
                         a.addView(x);
                     } else if (l == (tmpPfl.size())) {
                         Button end = new Button(this);
-                        end.setText("+");
+                        end.setBackgroundResource(R.drawable.add2);
                         end.setGravity(Gravity.CENTER);
                         TableRow.LayoutParams endpar = new TableRow.LayoutParams(350, 350, 0);
                         end.setLayoutParams(endpar);
