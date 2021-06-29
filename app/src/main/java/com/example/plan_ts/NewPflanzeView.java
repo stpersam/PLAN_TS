@@ -50,8 +50,10 @@ public class NewPflanzeView extends AppCompatActivity implements Spinner.OnItemS
     private TextView newerde;
     private TextView newlicht;
     private Button newPlant_ADD;
+    private Spinner newgroup_spinner;
 
     List<Pflanzenart> tmp = new ArrayList();
+    List<Gruppe> tmpgruppe = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +76,26 @@ public class NewPflanzeView extends AppCompatActivity implements Spinner.OnItemS
         newerde = findViewById(R.id.newerde);
         newlicht = findViewById(R.id.newlicht);
         newPlant_ADD = findViewById(R.id.newPlant_ADD);
+        newgroup_spinner = findViewById(R.id.newgroup_spinner);
 
         String[] arraySpinner = getPflanzenarten();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arraySpinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         addPlant_spinner.setAdapter(adapter);
         addPlant_spinner.setOnItemSelectedListener(NewPflanzeView.this);
+
+        String[] arraySpinnerGruppe = getGruppe();
+        ArrayAdapter<String> adapterGruppe = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arraySpinnerGruppe);
+        adapterGruppe.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        newgroup_spinner.setAdapter(adapterGruppe);
+        newgroup_spinner.setOnItemSelectedListener(NewPflanzeView.this);
+
+        for(int h = 0; h < arraySpinnerGruppe.length; h++){
+            if(gruppenname.equals(arraySpinnerGruppe[h])){
+                newgroup_spinner.setSelection(h);
+                break;
+            }
+        }
 
         newPlant_ADD.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +110,34 @@ public class NewPflanzeView extends AppCompatActivity implements Spinner.OnItemS
                 finish();
             }
         });
+    }
+
+    private String[] getGruppe() {
+        String resultGP;
+
+        try {
+            APIGET apigetGP = new APIGET(name, session, "GetUserGruppen");
+            Thread threadGP = new Thread(apigetGP);
+            threadGP.start();
+            threadGP.join();
+            resultGP = apigetGP.getResult();
+            resultGP = resultGP.replace("}{", "};{");
+            String[] tmpGP = resultGP.split(";");
+
+            Gson gsonGP = new Gson();
+            for (String gpx : tmpGP){
+                Gruppe gsonObjGP = gsonGP.fromJson(gpx, Gruppe.class);
+                tmpgruppe.add(gsonObjGP);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        String[] listGruppen = new String[tmpgruppe.size()];
+        for(int i = 0; i < tmpgruppe.size(); i++){
+            listGruppen[i] = tmpgruppe.get(i).getGruppenname();
+        }
+        return listGruppen;
     }
 
     @Override
