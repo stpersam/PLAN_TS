@@ -69,7 +69,7 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
     List<Gruppe> tmpgruppe = new ArrayList();
     public Pflanze detailplant;
 
-    public String APIURL = "https://192.168.179.1:45455/api/Plan_ts/";
+    public String APIURL = "https://10.0.0.152:45455/api/Plan_ts/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -343,6 +343,7 @@ public class PflanzeDetailView extends AppCompatActivity implements Spinner.OnIt
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        ((TextView) parent.getChildAt(0)).setTextColor(0xffffffff);
         String pflanzA = pflanzenart.getSelectedItem().toString();
         Pflanzenart pfl = null;
         String result2;
