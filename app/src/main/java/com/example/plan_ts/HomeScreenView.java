@@ -119,6 +119,7 @@ public class HomeScreenView extends AppCompatActivity {
                 Intent i = new Intent(HomeScreenView.this, NewPflanzeView.class);
                 i.putExtra(NewPflanzeView.SESSIONID, session);
                 i.putExtra(NewPflanzeView.USERNAME, name);
+                i.putExtra(NewPflanzeView.GRUPPENNAME, "");
                 startActivity(i);
             }
         });

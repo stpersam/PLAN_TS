@@ -22,22 +22,6 @@ public class Pflanze{
     public String Pflanzeartname;
 
 
-/*
-    @SerializedName("GegossenDate")
-    public Date GegossenDate;
-
-    public Date getGegossenDate() {
-        return GegossenDate;
-    }
-    public void setGegossenDate(String gegossen) {
-        try {
-            GegossenDate = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss.ffffff").parse(gegossen);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
-*/
-
     public Integer getPflanzenID() {
         return PflanzenID;
     }
